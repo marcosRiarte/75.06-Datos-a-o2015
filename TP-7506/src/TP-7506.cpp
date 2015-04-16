@@ -7,21 +7,59 @@
 //============================================================================
 
 #include <iostream>
-
-#include "tsvParser.h"
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 
 using namespace std;
 
+vector<string> fileToVector(const char *fileName);
+vector<string> parseTsvLine(string textLine);
+
+//test
 int main() {
-	tsvParser parser;
-	//Un ejemplo de como funciona el parser
-	parser.parse("1234567\t0\tmuy mala la pelicula");
 
-	cout << parser.getId() << endl;
-	cout << parser.getSentiment() << endl;
-	cout << parser.getReview() << endl;
+	int i=0;
 
-	//Prueba comitteo Martin
+	vector<string> fileVector = fileToVector("labeledTrainData.tsv");
+	vector<string> tokens;
+
+	for(i=0; i < 10;i++)
+	{
+		tokens = parseTsvLine(fileVector[i]);
+		//Tokens[0] = id; tokens[1] = sentiment; tokens[2] = review;
+		cout << tokens[2] << endl;
+	}
 	return 0;
+}
+
+//Carga todo el archivo en un vector de strings
+vector<string> fileToVector(const char *fileName)
+{
+	 string line;
+	 vector<string> fileVector;
+	 ifstream file (fileName);
+	 if (file.is_open())
+	 {
+		 while ( getline (file,line) )
+		 {
+			 fileVector.push_back(line);
+	    }
+	    file.close();
+	 }
+	 return fileVector;
+}
+
+//Parsea un string por tabulaciones y devuelve un vector
+vector<string> parseTsvLine(string textLine)
+{
+	   istringstream ss(textLine);
+	   string token;
+	   vector<string> tokens;
+
+	   while(std::getline(ss, token, '\t')) {
+	       tokens.push_back(token);
+	   }
+	   return tokens;
 }
