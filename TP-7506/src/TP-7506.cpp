@@ -25,11 +25,12 @@ int main() {
 	vector<string> fileVector = fileToVector("labeledTrainData.tsv");
 	vector<string> tokens;
 
-	for(i=0; i < 10;i++)
+
+	for(i=0; i < fileVector.size()-1;i++) //Sin contar los headers
 	{
 		tokens = parseTsvLine(fileVector[i]);
 		//Tokens[0] = id; tokens[1] = sentiment; tokens[2] = review;
-		cout << tokens[2] << endl;
+		cout << tokens[0] << endl;
 	}
 	return 0;
 }
@@ -63,3 +64,4 @@ vector<string> parseTsvLine(string textLine)
 	   }
 	   return tokens;
 }
+
