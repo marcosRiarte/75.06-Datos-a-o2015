@@ -6,50 +6,72 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
+
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "bzip2.c"
-
+#include "zlib.h"
+#include "Compresor.h"
 
 using namespace std;
 
 vector<string> fileToVector(const char *fileName);
 vector<string> parseTsvLine(string textLine);
+
+
 typedef char Char;
 
 //test
 int main() {
 
-	int i=0;
-
 	vector<string> fileVector = fileToVector("labeledTrainData.tsv");
 	vector<string> tokens;
+	vector<string> stringComprimidos;
 
-	for(i=0; i < fileVector.size()-1;i++) //Sin contar los headers
+	Compresor *compresor = new Compresor();
+	//Cuento desde 1 para saltear los headers
+	//Tomo los primeros 5 elementos
+	for(unsigned int i=1; i <6;i++)
 	{
 		tokens = parseTsvLine(fileVector[i]);
 
 		//Tokens[0] = id; tokens[1] = sentiment; tokens[2] = review;
 
 
-		//Pasa de string a char *
-
-		string strTemp = tokens[2];https://github.com/MartinAndu/75.06-Datos-a-o2015
+		//Pasa de string a char * (puede ser util, por eso lo deje comentarizado)
+/*
+		string strTemp = tokens[2];
 		Char* writable = new Char[strTemp.size() + 1];
 		std::copy(strTemp.begin(), strTemp.end(), writable);
 		writable[strTemp.size()] = '\0';
+*/
 
-		//Esto comprimiria strings pero es para ficheros
-		compress(writable);
-		cout << writable<< endl;
+		string str = tokens[2];
+		stringComprimidos.push_back(compresor->compress_string((const string&)str,Z_BEST_COMPRESSION));
 
-
-		delete[] writable;
 	}
+
+
+	for(unsigned int i=0; i <5;i++){
+		cout<<"Elemento comprimido:"<<stringComprimidos[i]<<endl;
+		cout<<endl;
+		cout<<"Elemento descomprimido:"<<compresor->decompress_string(stringComprimidos[i])<<endl;
+		cout<<endl;
+	}
+
+
+	//Ejemplo: calculo distancia entre el elemento 1 y el 5
+	string reviewA = parseTsvLine(fileVector[1])[2];
+	string reviewB = parseTsvLine(fileVector[6])[2];
+
+	float distanciaNCD = compresor->obtenerNCD(reviewA,reviewB);
+	cout<<"Distancia NCD entre elemento 1 y 5 = "<<distanciaNCD<<endl;
+
 	return 0;
 }
+
+
 
 //Carga todo el archivo en un vector de strings
 vector<string> fileToVector(const char *fileName)
@@ -80,4 +102,7 @@ vector<string> parseTsvLine(string textLine)
 	   }
 	   return tokens;
 }
+
+
+
 
