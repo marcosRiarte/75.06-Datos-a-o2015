@@ -65,9 +65,14 @@ int main() {
 	string reviewA = parseTsvLine(fileVector[1])[2];
 	string reviewB = parseTsvLine(fileVector[6])[2];
 
+	cout<<endl;
+	cout<<"Elemento 1 = "<<reviewA<<endl;
+	cout<<"Elemento 5 = "<<reviewB<<endl;
+
 	float distanciaNCD = compresor->obtenerNCD(reviewA,reviewB);
 	cout<<"Distancia NCD entre elemento 1 y 5 = "<<distanciaNCD<<endl;
 
+	delete compresor;
 	return 0;
 }
 
