@@ -10,12 +10,14 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include "bzip2.c"
 
 
 using namespace std;
 
 vector<string> fileToVector(const char *fileName);
 vector<string> parseTsvLine(string textLine);
+typedef char Char;
 
 //test
 int main() {
@@ -25,12 +27,26 @@ int main() {
 	vector<string> fileVector = fileToVector("labeledTrainData.tsv");
 	vector<string> tokens;
 
-
 	for(i=0; i < fileVector.size()-1;i++) //Sin contar los headers
 	{
 		tokens = parseTsvLine(fileVector[i]);
+
 		//Tokens[0] = id; tokens[1] = sentiment; tokens[2] = review;
-		cout << tokens[0] << endl;
+
+
+		//Pasa de string a char *
+
+		string strTemp = tokens[2];https://github.com/MartinAndu/75.06-Datos-a-o2015
+		Char* writable = new Char[strTemp.size() + 1];
+		std::copy(strTemp.begin(), strTemp.end(), writable);
+		writable[strTemp.size()] = '\0';
+
+		//Esto comprimiria strings pero es para ficheros
+		compress(writable);
+		cout << writable<< endl;
+
+
+		delete[] writable;
 	}
 	return 0;
 }
