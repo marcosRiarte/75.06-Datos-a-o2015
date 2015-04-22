@@ -41,7 +41,7 @@ int main() {
 		string sentiment = parser->getSentiment();
 		compresedReview cmpReview;
 
-		cmpReview.setReview(compresor->compress_string((const string&)str,Z_BEST_COMPRESSION));
+		cmpReview.setReview(str); //Modifico la base de conocimientos para que reciba strings sin comprimir
 		cmpReview.setSentiment(sentiment);
 
 		baseConocimientos.push_back(cmpReview);
@@ -56,6 +56,7 @@ int main() {
 	}
 
 	delete compresor;
+	delete parser;
 	return 0;
 }
 
