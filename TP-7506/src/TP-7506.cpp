@@ -13,64 +13,47 @@
 #include <sstream>
 #include "zlib.h"
 #include "Compresor.h"
+#include "tsvParser.h"
+#include "compresedReview.h"
 
 using namespace std;
 
 vector<string> fileToVector(const char *fileName);
-vector<string> parseTsvLine(string textLine);
-
 
 typedef char Char;
 
 //test
 int main() {
 
-	vector<string> fileVector = fileToVector("labeledTrainData.tsv");
+	vector<string> labeledVector = fileToVector("labeledTrainData.tsv");
 	vector<string> tokens;
-	vector<string> stringComprimidos;
+	vector<compresedReview> baseConocimientos;
 
+	unsigned int i=0;
+
+	tsvParser *parser = new tsvParser();
 	Compresor *compresor = new Compresor();
-	//Cuento desde 1 para saltear los headers
-	//Tomo los primeros 5 elementos
-	for(unsigned int i=1; i <6;i++)
+
+	for(i=1; i < 10 /*labeledVector.size()*/ ;i++)
 	{
-		tokens = parseTsvLine(fileVector[i]);
+		parser->parseLabeledTsv(labeledVector[i]);
+		string str = parser->getReview();
+		string sentiment = parser->getSentiment();
+		compresedReview cmpReview;
 
-		//Tokens[0] = id; tokens[1] = sentiment; tokens[2] = review;
+		cmpReview.setReview(compresor->compress_string((const string&)str,Z_BEST_COMPRESSION));
+		cmpReview.setSentiment(sentiment);
 
-
-		//Pasa de string a char * (puede ser util, por eso lo deje comentarizado)
-/*
-		string strTemp = tokens[2];
-		Char* writable = new Char[strTemp.size() + 1];
-		std::copy(strTemp.begin(), strTemp.end(), writable);
-		writable[strTemp.size()] = '\0';
-*/
-
-		string str = tokens[2];
-		stringComprimidos.push_back(compresor->compress_string((const string&)str,Z_BEST_COMPRESSION));
-
+		baseConocimientos.push_back(cmpReview);
 	}
 
-
-	for(unsigned int i=0; i <5;i++){
-		cout<<"Elemento comprimido:"<<stringComprimidos[i]<<endl;
-		cout<<endl;
-		cout<<"Elemento descomprimido:"<<compresor->decompress_string(stringComprimidos[i])<<endl;
-		cout<<endl;
+	//Calculo la ncd de la base de conocimientos con un ejemplo sacado del labeled.tsv
+	string ejemploTest = "I dont know why people think this is such a bad movie. Its got a pretty good plot, some good action, and the change of location for Harry does not hurt either. Sure some of its offensive and gratuitous but this is not the only movie like that. Eastwood is in good form as Dirty Harry, and I liked Pat Hingle in this movie as the small town cop. If you liked DIRTY HARRY, then you should see this one, its a lot better than THE DEAD POOL. 4/5";
+	for(i=0;i < baseConocimientos.size();i++)
+	{
+		float distanciaNCD = compresor->obtenerNCD(baseConocimientos[i].getReview(),ejemploTest);
+		cout << "NCD: " << distanciaNCD << endl;
 	}
-
-
-	//Ejemplo: calculo distancia entre el elemento 1 y el 5
-	string reviewA = parseTsvLine(fileVector[1])[2];
-	string reviewB = parseTsvLine(fileVector[6])[2];
-
-	cout<<endl;
-	cout<<"Elemento 1 = "<<reviewA<<endl;
-	cout<<"Elemento 5 = "<<reviewB<<endl;
-
-	float distanciaNCD = compresor->obtenerNCD(reviewA,reviewB);
-	cout<<"Distancia NCD entre elemento 1 y 5 = "<<distanciaNCD<<endl;
 
 	delete compresor;
 	return 0;
@@ -95,19 +78,13 @@ vector<string> fileToVector(const char *fileName)
 	 return fileVector;
 }
 
-//Parsea un string por tabulaciones y devuelve un vector
-vector<string> parseTsvLine(string textLine)
-{
-	   istringstream ss(textLine);
-	   string token;
-	   vector<string> tokens;
-
-	   while(std::getline(ss, token, '\t')) {
-	       tokens.push_back(token);
-	   }
-	   return tokens;
-}
-
+//Pasa de string a char * (puede ser util, por eso lo deje comentarizado)
+/*
+string strTemp = tokens[2];
+Char* writable = new Char[strTemp.size() + 1];
+std::copy(strTemp.begin(), strTemp.end(), writable);
+writable[strTemp.size()] = '\0';
+*/
 
 
 
