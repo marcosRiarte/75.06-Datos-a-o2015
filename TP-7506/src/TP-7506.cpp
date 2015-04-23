@@ -19,48 +19,104 @@
 using namespace std;
 
 vector<string> fileToVector(const char *fileName);
+float calcPromedio(vector<int> sentimientos);
 
 typedef char Char;
 
 //test
 int main() {
 
+	ofstream salidaKaggle;
+	salidaKaggle.open("SALIDA_KAGGLE.csv");
+	salidaKaggle << "id,sentiment"<<endl;
+
+
 	vector<string> labeledVector = fileToVector("labeledTrainData.tsv");
+	vector<string> testVector = fileToVector("testData.tsv");
 	vector<string> tokens;
+	vector<string> salidaVector;
 	vector<compresedReview> baseConocimientos;
+	vector<int> sentPorReview;
 
 	unsigned int i=0;
 
 	tsvParser *parser = new tsvParser();
 	Compresor *compresor = new Compresor();
 
-	for(i=1; i < 10 /*labeledVector.size()*/ ;i++)
+	for(i=0; i < 200 /*labeledVector.size()*/ ;i++)//Cantidad de reviews que va a comparar
 	{
 		parser->parseLabeledTsv(labeledVector[i]);
 		string str = parser->getReview();
 		string sentiment = parser->getSentiment();
 		compresedReview cmpReview;
 
-		cmpReview.setReview(compresor->compress_string((const string&)str,Z_BEST_COMPRESSION));
+		cmpReview.setReview(str); //Modifico la base de conocimientos para que reciba strings sin comprimir
 		cmpReview.setSentiment(sentiment);
 
 		baseConocimientos.push_back(cmpReview);
 	}
 
-	//Calculo la ncd de la base de conocimientos con un ejemplo sacado del labeled.tsv
-	string ejemploTest = "I dont know why people think this is such a bad movie. Its got a pretty good plot, some good action, and the change of location for Harry does not hurt either. Sure some of its offensive and gratuitous but this is not the only movie like that. Eastwood is in good form as Dirty Harry, and I liked Pat Hingle in this movie as the small town cop. If you liked DIRTY HARRY, then you should see this one, its a lot better than THE DEAD POOL. 4/5";
-	for(i=0;i < baseConocimientos.size();i++)
+	string testString;
+	string salida;
+	float distMinNCD, distanciaNCD,promedio;
+	int sentCercano;
+
+	for(i=1;i<testVector.size();i++) //
 	{
-		float distanciaNCD = compresor->obtenerNCD(baseConocimientos[i].getReview(),ejemploTest);
-		cout << "NCD: " << distanciaNCD << endl;
+		parser->parseUnLabeledTsv(testVector[i]);
+		testString = parser->getReview();
+		salida = parser->getId();
+		distMinNCD = 1;
+		sentCercano = 2;
+		cout << "Review: "<< i << endl;
+		for(int j=0;j < baseConocimientos.size();j++)
+			{
+				distanciaNCD = compresor->obtenerNCD(baseConocimientos[j].getReview(),testString);
+				if(distanciaNCD<0.85)
+				{
+					sentPorReview.push_back(baseConocimientos[j].getSentiment());
+				}
+				if(distanciaNCD<distMinNCD)
+				{
+					distMinNCD = distanciaNCD;
+					sentCercano = baseConocimientos[j].getSentiment();
+				}
+			}
+		promedio = calcPromedio(sentPorReview);
+		cout<< "Cant sentimientos: "<< sentPorReview.size() <<endl;
+		cout<< "NCD: "<< promedio<<endl;
+		cout<< "distancia NCD minima: " << distMinNCD<< endl;
+		cout<< "Sentimiento mas cercano: " << sentCercano<< endl<< endl;
+
+		salida.append(",");
+		ostringstream ss;
+		ss << sentCercano;
+		salida.append(ss.str());
+
+		salidaKaggle <<salida<<endl;
+
+		sentPorReview.clear();
 	}
 
+
 	delete compresor;
+	delete parser;
 	return 0;
 }
 
 
-
+float calcPromedio(vector<int> sentimientos)
+{
+	float promedio = 0;
+	int total = 0;
+	int i=0;
+	for(i=0;i<sentimientos.size();i++)
+	{
+		total += sentimientos[i];
+	}
+	promedio = (float)total / (float)i;
+	return promedio;
+}
 //Carga todo el archivo en un vector de strings
 vector<string> fileToVector(const char *fileName)
 {
