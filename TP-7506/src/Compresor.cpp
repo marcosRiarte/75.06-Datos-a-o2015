@@ -107,18 +107,16 @@ string Compresor::decompress_string(const std::string& str)
     return outstring;
 }
 
-float Compresor:: obtenerNCD(string strX,string strY){
+float Compresor:: obtenerNCD(string strX,int lengthX,string strY, int lengthY){
 	string strXY = strX;
 	strXY.append(strY);
-	string cx = compress_string((const string&)strX,Z_BEST_COMPRESSION);
-	string cy = compress_string((const string&)strY,Z_BEST_COMPRESSION);
-	string cxy = compress_string((const string&)strXY,Z_BEST_COMPRESSION); //Concatenacion
+	string cxy = compress_string((const string&)strXY,Z_BEST_SPEED); //Concatenacion
 
 	float n;
-	if (cy.length() > cx.length())
-	    n = (float)(cxy.length() - cx.length()) / (float)(cy.length());
+	if (lengthY > lengthX)
+	    n = (float)(cxy.length() - lengthX) / (float)lengthY;
 	else
-	    n = (float) (cxy.length() - cy.length()) / (float)(cx.length());
+	    n = (float) (cxy.length() - lengthY) / (float)lengthX;
 	return n;
 }
 

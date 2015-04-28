@@ -43,15 +43,18 @@ int main() {
 	tsvParser *parser = new tsvParser();
 	Compresor *compresor = new Compresor();
 
-	for(i=0; i < 200 /*labeledVector.size()*/ ;i++)//Cantidad de reviews que va a comparar
+	for(i=0; i <15000/*labeledVector.size()*/ ;i++)//Cantidad de reviews que va a comparar
 	{
 		parser->parseLabeledTsv(labeledVector[i]);
 		string str = parser->getReview();
 		string sentiment = parser->getSentiment();
+		string compresString = compresor->compress_string((const string&)str,Z_BEST_SPEED);
+
 		compresedReview cmpReview;
 
 		cmpReview.setReview(str); //Modifico la base de conocimientos para que reciba strings sin comprimir
 		cmpReview.setSentiment(sentiment);
+		cmpReview.setCompLength(compresString.length());
 
 		baseConocimientos.push_back(cmpReview);
 	}
@@ -65,14 +68,15 @@ int main() {
 	{
 		parser->parseUnLabeledTsv(testVector[i]);
 		testString = parser->getReview();
+		string testStringCompresed = compresor->compress_string((const string&)testString,Z_BEST_SPEED);
 		salida = parser->getId();
 		distMinNCD = 1;
 		sentCercano = 2;
 		cout << "Review: "<< i << endl;
 		for(int j=0;j < baseConocimientos.size();j++)
 			{
-				distanciaNCD = compresor->obtenerNCD(baseConocimientos[j].getReview(),testString);
-				if(distanciaNCD<0.85)
+				distanciaNCD = compresor->obtenerNCD(baseConocimientos[j].getReview(),baseConocimientos[j].getCompLength(),testString,testStringCompresed.length());
+				if(distanciaNCD<0.9)
 				{
 					sentPorReview.push_back(baseConocimientos[j].getSentiment());
 				}
@@ -101,6 +105,7 @@ int main() {
 
 	delete compresor;
 	delete parser;
+	salidaKaggle.close();
 	return 0;
 }
 

@@ -21,7 +21,7 @@ public:
 	Compresor();
 	string compress_string(const string& str,int compressionlevel);
 	string decompress_string(const std::string& str);
-	float obtenerNCD(string strA,string strB);
+	float obtenerNCD(string strA,int numa,string strB, int numb);
 	virtual ~Compresor();
 };
 

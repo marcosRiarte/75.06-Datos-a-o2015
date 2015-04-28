@@ -17,13 +17,16 @@ class compresedReview {
 private:
 	string review;
 	int sentiment;
+	int compLength;
 public:
 	compresedReview();
 	virtual ~compresedReview();
 	void setReview(string);
 	void setSentiment(string);
+	void setCompLength(int);
 	string getReview();
 	int getSentiment();
+	int getCompLength();
 };
 
 }

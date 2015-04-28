@@ -11,7 +11,7 @@ namespace std {
 
 compresedReview::compresedReview() {
 	sentiment = 0;
-
+	compLength = 0;
 }
 
 compresedReview::~compresedReview() {
@@ -30,6 +30,11 @@ void compresedReview::setSentiment(string sentiment)
 	else this->sentiment = 0;
 }
 
+void compresedReview::setCompLength(int length)
+{
+	this->compLength = length;
+}
+
 string compresedReview::getReview()
 {
 	return review;
@@ -38,6 +43,11 @@ string compresedReview::getReview()
 int compresedReview::getSentiment()
 {
 	return sentiment;
+}
+
+int compresedReview::getCompLength()
+{
+	return compLength;
 }
 
 }
