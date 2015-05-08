@@ -11,7 +11,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "zlib.h"
+#include "compress/zlib.h"
 #include "Compresor.h"
 #include "tsvParser.h"
 #include "compresedReview.h"
@@ -43,7 +43,7 @@ int main() {
 	tsvParser *parser = new tsvParser();
 	Compresor *compresor = new Compresor();
 
-	for(i=0; i <15000/*labeledVector.size()*/ ;i++)//Cantidad de reviews que va a comparar
+	for(i=0; i <10/*labeledVector.size()*/ ;i++)//Cantidad de reviews que va a comparar
 	{
 		parser->parseLabeledTsv(labeledVector[i]);
 		string str = parser->getReview();
