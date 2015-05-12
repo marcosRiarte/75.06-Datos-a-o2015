@@ -40,32 +40,32 @@ void NDCMatrix::setValue(float value, int posX, int posY) {
 }
 
 bool NDCMatrix::saveMatrix(string direccion) {
-	std::ofstream os(direccion.c_str(), std::ios::binary | std::ios::out);
+	ofstream os(direccion.c_str(), ios::binary | ios::out);
 	if ( !os.is_open() ) {
 		return false;
 	}
 
-	os.write(reinterpret_cast<const char*>(matriz), std::streamsize(alto*ancho*sizeof(float)));
+	os.write(reinterpret_cast<const char*>(matriz), streamsize(alto*ancho*sizeof(float)));
 	os.close();
 	return true;
 }
 
 bool NDCMatrix::loadMatrix(string direccion, int alto, int ancho) {
-	std::ifstream is(direccion.c_str(), std::ios::binary | std::ios::in);
+	ifstream is(direccion.c_str(), ios::binary | ios::in);
 	if ( !is.is_open() )
 	   return false;
 
-	is.read(reinterpret_cast<char*>(matriz), std::streamsize(alto*ancho*sizeof(double)));
+	is.read(reinterpret_cast<char*>(matriz), streamsize(alto*ancho*sizeof(double)));
 	is.close();
 	return true;
 }
 
-bool loadArray( double* pdata, size_t length, const std::string& file_path)
+bool loadArray( double* pdata, size_t length, const string& file_path)
 {
-    std::ifstream is(file_path.c_str(), std::ios::binary | std::ios::in);
+    ifstream is(file_path.c_str(), ios::binary | ios::in);
     if ( !is.is_open() )
     	return false;
-    is.read(reinterpret_cast<char*>(pdata), std::streamsize(length*sizeof(double)));
+    is.read(reinterpret_cast<char*>(pdata), streamsize(length*sizeof(double)));
     is.close();
     return true;
 }

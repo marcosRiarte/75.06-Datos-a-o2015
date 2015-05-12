@@ -16,6 +16,11 @@
 #include "tsvParser.h"
 #include "compresedReview.h"
 #include "NDCMatrix.h"
+#include "stringtokeniterator.h"
+#include <iterator>
+#include <stdlib.h>
+#include <string>
+
 
 using namespace std;
 
@@ -145,12 +150,56 @@ void pruebaMatriz() {
 		}
 }
 
+
+void limpiarReview(){
+
+
+	vector<string> labeledVector = fileToVector("labeledTrainData.tsv");
+	vector<string> testVector = fileToVector("testData.tsv");
+	vector<string> tokens;
+	vector<string> salidaVector;
+	vector<compresedReview> baseConocimientos;
+	vector<int> sentPorReview;
+
+	unsigned int i=0;
+
+	tsvParser *parser = new tsvParser();
+
+
+
+
+	for(i=0; i <=labeledVector.size();i++){
+		parser->parseLabeledTsv(labeledVector[i]);
+		string review = parser->getReview();
+		string sentiment = parser->getSentiment();
+
+
+		//cout<<review<<endl;
+		string reviewLimpia = "";
+		for (int x=0;x<review.size();x++){
+	        if (!ispunct(review.at(x)) && !isdigit(review.at(x)))
+	        	reviewLimpia+=review.at(x);
+		}
+
+
+
+		stringstream nuevaReview;
+		nuevaReview.str(""); //Vacia le buffer
+		copy(string_token_iterator(reviewLimpia),string_token_iterator(),ostream_iterator <std::string> (nuevaReview," "));
+
+	    cout<<nuevaReview.str()<<endl;
+	}
+
+
+}
+
+
+
 //test
 int main() {
-
 	//process();
-	pruebaMatriz();
-
+	//pruebaMatriz();
+	limpiarReview(); //Pruebo limpieza de html
 	return 0;
 }
 
@@ -184,14 +233,3 @@ vector<string> fileToVector(const char *fileName)
 	 }
 	 return fileVector;
 }
-
-//Pasa de string a char * (puede ser util, por eso lo deje comentarizado)
-/*
-string strTemp = tokens[2];
-Char* writable = new Char[strTemp.size() + 1];
-std::copy(strTemp.begin(), strTemp.end(), writable);
-writable[strTemp.size()] = '\0';
-*/
-
-
-

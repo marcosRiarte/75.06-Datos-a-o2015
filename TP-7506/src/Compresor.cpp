@@ -32,14 +32,14 @@ string Compresor::compress_string(const string& str,int compressionlevel = Z_BES
     memset(&zs, 0, sizeof(zs));
 
     if (deflateInit(&zs, compressionlevel) != Z_OK)
-        throw(std::runtime_error("deflateInit failed while compressing."));
+        throw(runtime_error("deflateInit failed while compressing."));
 
     zs.next_in = (Bytef*)str.data();
     zs.avail_in = str.size();           // set the z_stream's input
 
     int ret;
     char outbuffer[32768];
-    std::string outstring;
+    string outstring;
 
     // retrieve the compressed bytes blockwise
     do {
@@ -58,28 +58,28 @@ string Compresor::compress_string(const string& str,int compressionlevel = Z_BES
     deflateEnd(&zs);
 
     if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
-        std::ostringstream oss;
+        ostringstream oss;
         oss << "Exception during zlib compression: (" << ret << ") " << zs.msg;
-        throw(std::runtime_error(oss.str()));
+        throw(runtime_error(oss.str()));
     }
 
     return outstring;
 }
 
-string Compresor::decompress_string(const std::string& str)
+string Compresor::decompress_string(const string& str)
 {
     z_stream zs;                        // z_stream is zlib's control structure
     memset(&zs, 0, sizeof(zs));
 
     if (inflateInit(&zs) != Z_OK)
-        throw(std::runtime_error("inflateInit failed while decompressing."));
+        throw(runtime_error("inflateInit failed while decompressing."));
 
     zs.next_in = (Bytef*)str.data();
     zs.avail_in = str.size();
 
     int ret;
     char outbuffer[32768];
-    std::string outstring;
+    string outstring;
 
     // get the decompressed bytes blockwise using repeated calls to inflate
     do {
@@ -98,10 +98,10 @@ string Compresor::decompress_string(const std::string& str)
     inflateEnd(&zs);
 
     if (ret != Z_STREAM_END) {          // an error occurred that was not EOF
-        std::ostringstream oss;
+        ostringstream oss;
         oss << "Exception during zlib decompression: (" << ret << ") "
             << zs.msg;
-        throw(std::runtime_error(oss.str()));
+        throw(runtime_error(oss.str()));
     }
 
     return outstring;

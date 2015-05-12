@@ -60,7 +60,7 @@ vector<string> tsvParser::parseLine(string textLine)
 	   string token;
 	   vector<string> tokens;
 
-	   while(std::getline(ss, token, '\t')) {
+	   while(getline(ss, token, '\t')) {
 	       tokens.push_back(token);
 	   }
 
