@@ -48,6 +48,7 @@ void testPrintIdSentiment(vector<string> idSentiment){
 	}
 }
 
+
 //test
 int main() {
 
@@ -60,6 +61,7 @@ int main() {
 
 	Parser parser;
 	ReviewCleaner reviewCleaner;
+
 	Compresor compresor;
 
 	DataSet dataSet;
