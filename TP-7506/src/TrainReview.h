@@ -8,25 +8,17 @@
 #ifndef COMPRESEDREVIEW_H_
 #define COMPRESEDREVIEW_H_
 
-#include <iostream>
 #include <string>
+#include "ReviewInformation.h"
 
 namespace std {
 
-class compresedReview {
+class TrainReview  : public ReviewInformation{
 private:
-	string review;
 	int sentiment;
-	int compLength;
 public:
-	compresedReview();
-	virtual ~compresedReview();
-	void setReview(string);
 	void setSentiment(string);
-	void setCompLength(int);
-	string getReview();
 	int getSentiment();
-	int getCompLength();
 };
 
 }

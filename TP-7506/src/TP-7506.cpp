@@ -13,111 +13,79 @@
 #include <sstream>
 #include "compress/zlib.h"
 #include "Compresor.h"
-#include "tsvParser.h"
-#include "compresedReview.h"
-#include "NDCMatrix.h"
 #include "stringtokeniterator.h"
+#include "DataSet.h"
 #include <iterator>
 #include <stdlib.h>
 #include <string>
 
+#include "FileHandler.h"
+#include "NCDMatrix.h"
+#include "Parser.h"
+#include "TrainReview.h"
+
 
 using namespace std;
 
-vector<string> fileToVector(const char *fileName);
-float calcPromedio(vector<int> sentimientos);
+void testFileReader(vector<string> testVector){
+	cout<<"File string example: ";
+	cout<<testVector[7]<<endl;
 
-typedef char Char;
-
-
-//proceso
-void process() {
-	ofstream salidaKaggle;
-		salidaKaggle.open("SALIDA_KAGGLE.csv");
-		salidaKaggle << "id,sentiment"<<endl;
-
-
-		vector<string> labeledVector = fileToVector("labeledTrainData.tsv");
-		vector<string> testVector = fileToVector("testData.tsv");
-		vector<string> tokens;
-		vector<string> salidaVector;
-		vector<compresedReview> baseConocimientos;
-		vector<int> sentPorReview;
-
-		unsigned int i=0;
-
-		tsvParser *parser = new tsvParser();
-		Compresor *compresor = new Compresor();
-
-		for(i=0; i <100/*labeledVector.size()*/ ;i++)//Cantidad de reviews que va a comparar
-		{
-			parser->parseLabeledTsv(labeledVector[i]);
-			string str = parser->getReview();
-			string sentiment = parser->getSentiment();
-			string compresString = compresor->compress_string((const string&)str,Z_BEST_SPEED);
-
-			compresedReview cmpReview;
-
-			cmpReview.setReview(str); //Modifico la base de conocimientos para que reciba strings sin comprimir
-			cmpReview.setSentiment(sentiment);
-			cmpReview.setCompLength(compresString.length());
-
-			baseConocimientos.push_back(cmpReview);
-		}
-
-		string testString;
-		string salida;
-		float distMinNCD, distanciaNCD,promedio;
-		int sentCercano;
-
-
-		for(i=1;i<testVector.size();i++) //
-		{
-			parser->parseUnLabeledTsv(testVector[i]);
-			testString = parser->getReview();
-			string testStringCompresed = compresor->compress_string((const string&)testString,Z_BEST_SPEED);
-			salida = parser->getId();
-			distMinNCD = 1;
-			sentCercano = 2;
-			cout << "Review: "<< i << endl;
-
-			for(int j=0;j < baseConocimientos.size();j++)
-				{
-					distanciaNCD = compresor->obtenerNCD(baseConocimientos[j].getReview(),baseConocimientos[j].getCompLength(),testString,testStringCompresed.length());
-					if(distanciaNCD<0.9)
-					{
-						sentPorReview.push_back(baseConocimientos[j].getSentiment());
-					}
-					if(distanciaNCD<distMinNCD)
-					{
-						distMinNCD = distanciaNCD;
-						sentCercano = baseConocimientos[j].getSentiment();
-					}
-				}
-			promedio = calcPromedio(sentPorReview);
-			cout<< "Cant sentimientos: "<< sentPorReview.size() <<endl;
-			cout<< "NCD: "<< promedio<<endl;
-			cout<< "distancia NCD minima: " << distMinNCD<< endl;
-			cout<< "Sentimiento mas cercano: " << sentCercano<< endl<< endl;
-
-			salida.append(",");
-			ostringstream ss;
-			ss << sentCercano;
-			salida.append(ss.str());
-
-			salidaKaggle <<salida<<endl;
-
-			sentPorReview.clear();
-		}
-
-
-		delete compresor;
-		delete parser;
-		salidaKaggle.close();
-		return;
 }
 
-void pruebaMatriz() {
+void testDataSet(DataSet data){
+	data.printExample();
+}
+
+void testPrintMatrix(DataSet dataSet){
+
+	dataSet.printNCDMatrix();
+}
+
+void testPrintIdSentiment(vector<string> idSentiment){
+	for(int i=0;i<50;i++){
+		cout<<idSentiment[i]<<endl;
+	}
+}
+
+//test
+int main() {
+
+	FileHandler fileHandler;
+	vector<string>trainRawData = fileHandler.readFile("labeledTrainData.tsv");
+	vector<string>testRawData = fileHandler.readFile("testData.tsv");
+
+	//testFileReader(trainRawData);
+	//testFileReader(testRawData);
+
+	Parser parser;
+	ReviewCleaner reviewCleaner;
+	Compresor compresor;
+
+	DataSet dataSet;
+
+	dataSet.setTrainData(trainRawData);
+	dataSet.setTestData(testRawData);
+
+	//testDataSet(dataSet);
+
+	dataSet.generateNCDMatrix(25000,500);//La cantidad de reviews que vamos a generar la NCD para pruebas.
+	//testPrintMatrix(dataSet);
+
+	vector<string> idSentiment = dataSet.generateIdSentimentVector();
+	//testPrintIdSentiment(idSentiment);
+
+	fileHandler.writeFile("Salida_Kaggle.csv","id,sentiment", idSentiment);
+
+	return 0;
+}
+
+
+
+
+
+
+/*void pruebaMatriz() {
 	NDCMatrix *matriz = new NDCMatrix(3, 3);
 		matriz->setValue(0.1,0,0);
 		matriz->setValue(0.2,0,1);
@@ -149,87 +117,4 @@ void pruebaMatriz() {
 			cout<< "NO se guardo la matriz"<<endl;
 		}
 }
-
-
-void limpiarReview(){
-
-
-	vector<string> labeledVector = fileToVector("labeledTrainData.tsv");
-	vector<string> testVector = fileToVector("testData.tsv");
-	vector<string> tokens;
-	vector<string> salidaVector;
-	vector<compresedReview> baseConocimientos;
-	vector<int> sentPorReview;
-
-	unsigned int i=0;
-
-	tsvParser *parser = new tsvParser();
-
-
-
-
-	for(i=0; i <=labeledVector.size();i++){
-		parser->parseLabeledTsv(labeledVector[i]);
-		string review = parser->getReview();
-		string sentiment = parser->getSentiment();
-
-
-		//cout<<review<<endl;
-		string reviewLimpia = "";
-		for (int x=0;x<review.size();x++){
-	        if (!ispunct(review.at(x)) && !isdigit(review.at(x)))
-	        	reviewLimpia+=review.at(x);
-		}
-
-
-
-		stringstream nuevaReview;
-		nuevaReview.str(""); //Vacia le buffer
-		copy(string_token_iterator(reviewLimpia),string_token_iterator(),ostream_iterator <std::string> (nuevaReview," "));
-
-	    cout<<nuevaReview.str()<<endl;
-	}
-
-
-}
-
-
-
-//test
-int main() {
-	//process();
-	//pruebaMatriz();
-	limpiarReview(); //Pruebo limpieza de html
-	return 0;
-}
-
-
-
-float calcPromedio(vector<int> sentimientos)
-{
-	float promedio = 0;
-	int total = 0;
-	int i=0;
-	for(i=0;i<sentimientos.size();i++)
-	{
-		total += sentimientos[i];
-	}
-	promedio = (float)total / (float)i;
-	return promedio;
-}
-//Carga todo el archivo en un vector de strings
-vector<string> fileToVector(const char *fileName)
-{
-	 string line;
-	 vector<string> fileVector;
-	 ifstream file (fileName);
-	 if (file.is_open())
-	 {
-		 while ( getline (file,line) )
-		 {
-			 fileVector.push_back(line);
-	    }
-	    file.close();
-	 }
-	 return fileVector;
-}
+*/

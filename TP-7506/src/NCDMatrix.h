@@ -11,12 +11,14 @@
 #include <string>
 using namespace std;
 
-class NDCMatrix {
+class NCDMatrix {
 public:
-	NDCMatrix();
-	NDCMatrix(int alto, int ancho);
-	virtual ~NDCMatrix();
+	NCDMatrix();
+	NCDMatrix(int alto, int ancho);
+	virtual ~NCDMatrix();
 
+	int getAncho();
+	int getAlto();
 	void setValue(float value,int posX, int posY);
 	float getValue(int posX, int posY);
 	bool saveMatrix(string direccion);

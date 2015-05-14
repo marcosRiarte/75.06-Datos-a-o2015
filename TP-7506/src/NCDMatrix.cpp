@@ -5,16 +5,17 @@
  *      Author: ruben
  */
 
-#include "NDCMatrix.h"
+#include "NCDMatrix.h"
+
 #include <fstream>
 #include <iostream>
 
-NDCMatrix::NDCMatrix() {
+NCDMatrix::NCDMatrix() {
 	// TODO Auto-generated constructor stub
 
 }
 
-NDCMatrix::NDCMatrix(int alto, int ancho) {
+NCDMatrix::NCDMatrix(int alto, int ancho) {
 	this->alto = alto;
 	this->ancho = ancho;
 	matriz = new float*[alto];
@@ -23,7 +24,7 @@ NDCMatrix::NDCMatrix(int alto, int ancho) {
 	}
 }
 
-NDCMatrix::~NDCMatrix() {
+NCDMatrix::~NCDMatrix() {
 	// TODO Auto-generated destructor stub
 	for(int i = 0; i < alto; ++i) {
 	    delete [] matriz[i];
@@ -31,15 +32,23 @@ NDCMatrix::~NDCMatrix() {
 	delete [] matriz;
 }
 
-float NDCMatrix::getValue(int posX, int posY) {
+int NCDMatrix::getAncho() {
+	return this->ancho;
+}
+
+int NCDMatrix::getAlto() {
+	return this->alto;
+}
+
+float NCDMatrix::getValue(int posX, int posY) {
 	return this->matriz[posX][posY];
 }
 
-void NDCMatrix::setValue(float value, int posX, int posY) {
+void NCDMatrix::setValue(float value, int posX, int posY) {
 	this->matriz[posX][posY] = value;
 }
 
-bool NDCMatrix::saveMatrix(string direccion) {
+bool NCDMatrix::saveMatrix(string direccion) {
 	ofstream os(direccion.c_str(), ios::binary | ios::out);
 	if ( !os.is_open() ) {
 		return false;
@@ -50,7 +59,7 @@ bool NDCMatrix::saveMatrix(string direccion) {
 	return true;
 }
 
-bool NDCMatrix::loadMatrix(string direccion, int alto, int ancho) {
+bool NCDMatrix::loadMatrix(string direccion, int alto, int ancho) {
 	ifstream is(direccion.c_str(), ios::binary | ios::in);
 	if ( !is.is_open() )
 	   return false;
