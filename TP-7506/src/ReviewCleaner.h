@@ -13,6 +13,7 @@
 #include <sstream>
 #include <iterator>
 #include "stringtokeniterator.h"
+#include "StopWord.h"
 
 namespace std {
 
@@ -22,10 +23,8 @@ public:
 	virtual ~ReviewCleaner();
 
 	string cleanReview(string);
-	void trim(string&);
 	string removerSubstringsDeString(string s,string t);
 
-	vector<string>stopwords;
 };
 
 } /* namespace std */

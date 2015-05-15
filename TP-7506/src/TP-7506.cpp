@@ -51,11 +51,9 @@ void testPrintIdSentiment(vector<string> idSentiment){
 
 //test
 int main() {
-
 	FileHandler fileHandler;
 	vector<string>trainRawData = fileHandler.readFile("labeledTrainData.tsv");
 	vector<string>testRawData = fileHandler.readFile("testData.tsv");
-
 	//testFileReader(trainRawData);
 	//testFileReader(testRawData);
 
