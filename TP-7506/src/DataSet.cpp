@@ -65,7 +65,7 @@ void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 		cout<< "OK" << endl;
 	}
 	this->ncdMatrix = ncdMatrix;
-
+	this->ncdMatrix->guardarMatrizDeFormaLinear();
 }
 
 
@@ -100,7 +100,6 @@ vector<string> DataSet::generateIdSentimentVector(){
 	}
 	return idSentiment;
 }
-
 
 void DataSet::printNCDMatrix(){
 

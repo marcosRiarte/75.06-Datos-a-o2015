@@ -7,8 +7,9 @@
 
 #include "NCDMatrix.h"
 
-#include <fstream>
-#include <iostream>
+
+
+namespace std {
 
 NCDMatrix::NCDMatrix() {
 	// TODO Auto-generated constructor stub
@@ -77,5 +78,27 @@ bool loadArray( double* pdata, size_t length, const string& file_path)
     is.read(reinterpret_cast<char*>(pdata), streamsize(length*sizeof(double)));
     is.close();
     return true;
+}
+
+void NCDMatrix::guardarMatrizDeFormaLinear(){
+
+
+	FileHandler filehandler;
+	vector<string> distancias;
+	cout<<"Grabo Matriz de NCD linea por linea: "<<endl;
+	for(int i=0;i<this->getAlto();i++){
+		string lineaNCD = "";
+		for(int j=0;j<this->getAncho();j++){
+			ostringstream ss;
+			ss << this->matriz[i][j];
+			lineaNCD.append("#");
+			lineaNCD.append(ss.str());
+		}
+		distancias.push_back(lineaNCD);
+	}
+
+	filehandler.writeFile("Distancias.txt",distancias);
+}
+
 }
 

@@ -21,6 +21,7 @@ public:
 	virtual ~FileHandler();
 	vector<string> readFile(const char* filename);
 	void writeFile(const char* fileName, const char* header, vector<string> lines);
+	void writeFile(const char* fileName, vector<string> lines);
 };
 
 } /* namespace std */

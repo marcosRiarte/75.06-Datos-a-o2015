@@ -43,4 +43,13 @@ void FileHandler::writeFile(const char* fileName, const char* header, vector<str
 	file.close();
 }
 
+void FileHandler::writeFile(const char* fileName, vector<string> lines){
+	ofstream file;
+	file.open(fileName);
+	for(int i=0; i< lines.size();i++){
+		file<<lines[i]<<endl;
+	}
+	file.close();
+}
+
 } /* namespace std */

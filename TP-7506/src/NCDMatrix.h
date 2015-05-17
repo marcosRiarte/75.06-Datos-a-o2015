@@ -9,7 +9,12 @@
 #define NDCMATRIZ_H_
 
 #include <string>
-using namespace std;
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include "FileHandler.h"
+
+namespace std{
 
 class NCDMatrix {
 public:
@@ -21,11 +26,13 @@ public:
 	int getAlto();
 	void setValue(float value,int posX, int posY);
 	float getValue(int posX, int posY);
+	void guardarMatrizDeFormaLinear();
 	bool saveMatrix(string direccion);
 	bool loadMatrix(string direccion, int alto, int ancho);
 private:
 	int alto, ancho;
 	float **matriz;
 };
+}
 
 #endif /* NDCMATRIZ_H_ */

@@ -36,7 +36,9 @@ public:
 	void printExample();
 	void printNCDMatrix();
 	void generateNCDMatrix(int alto, int ancho);
+
 	vector<string> generateIdSentimentVector();
+
 };
 
 } /* namespace std */
