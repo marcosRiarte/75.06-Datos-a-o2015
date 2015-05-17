@@ -23,6 +23,7 @@ NCDMatrix::NCDMatrix(int alto, int ancho) {
 	for(int i = 0; i < alto; ++i) {
 	    matriz[i] = new float[ancho];
 	}
+
 }
 
 NCDMatrix::~NCDMatrix() {
@@ -98,6 +99,47 @@ void NCDMatrix::guardarMatrizDeFormaLinear(){
 	}
 
 	filehandler.writeFile("Distancias.txt",distancias);
+}
+
+void NCDMatrix::levantarMatrizDeFormaLinear(){
+	FileHandler filehandler;
+
+	vector<string> distancias= filehandler.readFile("Distancias.txt");
+
+	cout<<"Leo Matriz de NCD linea por linea: "<<endl;
+
+
+	int x=0;
+	for(int i=0;i<distancias.size();i++){
+		string delimiter = "#";
+
+		size_t pos = 0;
+		string token;
+
+		pos = distancias[i].find(delimiter);
+		distancias[i].erase(0, pos + delimiter.length());
+
+
+		int y = 0;
+		while ((pos = distancias[i].find(delimiter)) != string::npos) {
+		    token = distancias[i].substr(0, pos);
+		    this->matriz[x][y] = ::atof(token.c_str());
+		    distancias[i].erase(0, pos + delimiter.length());
+			y++;
+		}
+
+		this->matriz[x][y] = ::atof(distancias[i].c_str());
+		x++;
+	}
+
+	//Prueba
+
+	for (int x=0;x<this->alto;x++){
+		for (int y=0;y<this->ancho;y++)
+			cout<<matriz[x][y]<< " ";
+		cout<<endl;
+	}
+
 }
 
 }

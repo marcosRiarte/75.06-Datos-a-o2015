@@ -51,6 +51,7 @@ void testPrintIdSentiment(vector<string> idSentiment){
 
 //test
 int main() {
+
 	FileHandler fileHandler;
 	vector<string>trainRawData = fileHandler.readFile("labeledTrainData.tsv");
 	vector<string>testRawData = fileHandler.readFile("testData.tsv");
@@ -76,6 +77,15 @@ int main() {
 	//testPrintIdSentiment(idSentiment);
 
 	fileHandler.writeFile("Salida_Kaggle.csv","id,sentiment", idSentiment);
+
+
+	/*
+	  //Prueba de lectura sobre archivo de 25000 x 10
+	  NCDMatrix ncdmatrix(25000,10);
+	  ncdmatrix.levantarMatrizDeFormaLinear();
+
+
+	 */
 
 	return 0;
 }

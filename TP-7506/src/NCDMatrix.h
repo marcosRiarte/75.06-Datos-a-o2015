@@ -8,11 +8,15 @@
 #ifndef NDCMATRIZ_H_
 #define NDCMATRIZ_H_
 
-#include <string>
+#include <string.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <iterator>
+#include <stdlib.h>
+#include <stdio.h>
 #include "FileHandler.h"
+#include "stringtokeniterator.h"
 
 namespace std{
 
@@ -27,6 +31,7 @@ public:
 	void setValue(float value,int posX, int posY);
 	float getValue(int posX, int posY);
 	void guardarMatrizDeFormaLinear();
+	void levantarMatrizDeFormaLinear();
 	bool saveMatrix(string direccion);
 	bool loadMatrix(string direccion, int alto, int ancho);
 private:
