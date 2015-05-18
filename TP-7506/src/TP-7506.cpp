@@ -60,7 +60,7 @@ int main() {
 
 	Parser parser;
 	ReviewCleaner reviewCleaner;
-
+//
 	Compresor compresor;
 
 	DataSet dataSet;
