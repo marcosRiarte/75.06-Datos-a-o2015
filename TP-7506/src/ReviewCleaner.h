@@ -18,6 +18,9 @@
 namespace std {
 
 class ReviewCleaner {
+private:
+	string quitarStopWords(string);
+	StopWord stopword;
 public:
 	ReviewCleaner();
 	virtual ~ReviewCleaner();

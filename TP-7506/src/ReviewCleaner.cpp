@@ -46,6 +46,16 @@ string ReviewCleaner::cleanReview(string review){
 
 	}
 
+	string reviewFinal = this->quitarStopWords(reviewLimpia);
+
+
+	cout<<reviewFinal<<endl;
+
+
+	return reviewFinal;
+	}
+
+string ReviewCleaner::quitarStopWords(string reviewLimpia){
 
 	stringstream nuevaReview;
 	nuevaReview.str(""); //Vacia le buffer
@@ -56,17 +66,18 @@ string ReviewCleaner::cleanReview(string review){
 	//Elimino las stopwords
 	string reviewFinal = " ";
 
-	StopWord stopword;
 	string palabraTokenizada;
 	while (nuevaReview >> palabraTokenizada){
-		if (!stopword.esUnaStopWord(palabraTokenizada)){
+		if (!this->stopword.esUnaStopWord(palabraTokenizada)){
 			reviewFinal.append(palabraTokenizada);
-			//reviewFinal.append(" "); Si se quiere agregar espacios
+			reviewFinal.append(" ");// Si se quiere agregar espacios
 		}
 	}
 
+
 	return reviewFinal;
-	}
+}
+
 }
 
 

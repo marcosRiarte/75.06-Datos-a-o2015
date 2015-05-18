@@ -23,6 +23,7 @@ void DataSet::setTrainData(vector<string> dataSet) {
 	vector<string> tokens;
 	string cleanReview;
 	string compressedReview;
+
 	for(i=1;i<dataSet.size();i++){
 		TrainReview trainReview;
 		tokens = parser.parseLine(dataSet[i],'\t');

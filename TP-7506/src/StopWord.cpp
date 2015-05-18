@@ -35,15 +35,12 @@ namespace std{
 	}
 
 	bool StopWord::esUnaStopWord(string candidatoStopWord){
-		bool esUnaStopWord = false;
-		for (int x=0;x<stopwords.size() && !esUnaStopWord;x++){
-			if (candidatoStopWord == stopwords[x] || candidatoStopWord == "a"){
-					esUnaStopWord = true;
-			}
-		}
-
-		return esUnaStopWord;
+		if (find(this->stopwords.begin(), this->stopwords.end(), candidatoStopWord) != this->stopwords.end() || candidatoStopWord == "a")
+		  return true;
+		return false;
 	}
+
+
 }
 
 
