@@ -6,31 +6,19 @@
  */
 
 #include "ReviewCleaner.h"
-#include "FileHandler.h"
 
 
 namespace std {
 
 ReviewCleaner::ReviewCleaner() {
 	// TODO Auto-generated constructor stub
-	FileHandler fileHandler;
-	stopwords = fileHandler.readFile("stop-words.txt");
-
-	for (int x=0; x < stopwords.size();x++){
-		trim(stopwords[x]);
-	}
-
 }
+
 
 ReviewCleaner::~ReviewCleaner() {
 	// TODO Auto-generated destructor stub
 }
 
-
-void ReviewCleaner::trim(string& s){
-	const string& delimiters = " \f\n\r\t\v";
-    s.erase( s.find_last_not_of( delimiters ) + 1 ).erase( 0, s.erase( s.find_last_not_of( delimiters ) + 1 ).find_first_not_of( delimiters ) );
-}
 
 string ReviewCleaner::removerSubstringsDeString(string s,string t){ //s: substring a remover , t:string original
 	string::size_type i = t.find(s);
@@ -43,6 +31,7 @@ string ReviewCleaner::removerSubstringsDeString(string s,string t){ //s: substri
 
 	return t;
 }
+
 string ReviewCleaner::cleanReview(string review){
 
 	string reviewLimpia = "";
@@ -57,29 +46,28 @@ string ReviewCleaner::cleanReview(string review){
 
 	}
 
+
 	stringstream nuevaReview;
 	nuevaReview.str(""); //Vacia le buffer
 	copy(string_token_iterator(reviewLimpia),string_token_iterator(),ostream_iterator <string> (nuevaReview,"\n"));
 
+
+/*
 	//Elimino las stopwords
 	string reviewFinal = " ";
-	bool esUnaStopword;
 
+	StopWord stopword;
 	string palabraTokenizada;
 	while (nuevaReview >> palabraTokenizada){
-		esUnaStopword = false;
-		for (int x=0;x<stopwords.size() && !esUnaStopword;x++){
-			if (palabraTokenizada == stopwords[x] || palabraTokenizada == "a"){
-					esUnaStopword = true;
-			}
-		}
-		if (!esUnaStopword){
+		if (!stopword.esUnaStopWord(palabraTokenizada)){
 			reviewFinal.append(palabraTokenizada);
+			//reviewFinal.append(" "); Si se quiere agregar espacios
 		}
-
 	}
-
-
-	return reviewFinal;
+*/
+	return nuevaReview.str();//reviewFinal
 	}
 }
+
+
+

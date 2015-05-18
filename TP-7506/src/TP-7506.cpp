@@ -55,7 +55,6 @@ int main() {
 	FileHandler fileHandler;
 	vector<string>trainRawData = fileHandler.readFile("labeledTrainData.tsv");
 	vector<string>testRawData = fileHandler.readFile("testData.tsv");
-
 	//testFileReader(trainRawData);
 	//testFileReader(testRawData);
 
@@ -67,17 +66,32 @@ int main() {
 	DataSet dataSet;
 
 	dataSet.setTrainData(trainRawData);
+	cout<<"Base de train generada\n";
 	dataSet.setTestData(testRawData);
+	cout<<"Base de test generada\n";
 
 	//testDataSet(dataSet);
 
-	dataSet.generateNCDMatrix(25000,500);//La cantidad de reviews que vamos a generar la NCD para pruebas.
+	dataSet.generateNCDMatrix(25000,5000);//La cantidad de reviews que vamos a generar la NCD para pruebas.
+	cout<<"Matriz generada\n";
 	//testPrintMatrix(dataSet);
 
-	vector<string> idSentiment = dataSet.generateIdSentimentVector();
+	vector<string> idSentiment = dataSet.generateIdSentimentVector(10/*Cantidad de sentimientos para promediar*/);
+	cout<<"Vector para archivo generado\n";
 	//testPrintIdSentiment(idSentiment);
 
-	fileHandler.writeFile("Salida_Kaggle.csv","id,sentiment", idSentiment);
+
+	fileHandler.writeFile("Salida_Kaggle10.csv","id,sentiment", idSentiment);
+	cout<<"Archivo de salida generada\n";
+
+	idSentiment.clear();
+	/*
+	  //Prueba de lectura sobre archivo de 25000 x 10
+	  NCDMatrix ncdmatrix(25000,10);
+	  ncdmatrix.levantarMatrizDeFormaLinear();
+
+
+	 */
 
 	return 0;
 }
