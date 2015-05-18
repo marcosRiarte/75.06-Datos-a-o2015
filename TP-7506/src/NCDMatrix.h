@@ -28,12 +28,14 @@ public:
 
 	int getAncho();
 	int getAlto();
+	float* getFila(int fila);
 	void setValue(float value,int posX, int posY);
 	float getValue(int posX, int posY);
 	void guardarMatrizDeFormaLinear();
 	void levantarMatrizDeFormaLinear();
 	bool saveMatrix(string direccion);
 	bool loadMatrix(string direccion, int alto, int ancho);
+	void find_k_max(int fila, int k, int indices[]);
 private:
 	int alto, ancho;
 	float **matriz;

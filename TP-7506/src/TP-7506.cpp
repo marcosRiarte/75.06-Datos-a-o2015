@@ -73,7 +73,7 @@ int main() {
 	dataSet.generateNCDMatrix(25000,500);//La cantidad de reviews que vamos a generar la NCD para pruebas.
 	//testPrintMatrix(dataSet);
 
-	vector<string> idSentiment = dataSet.generateIdSentimentVector();
+	vector<string> idSentiment = dataSet.generateIdSentimentVector(10/*Cantidad de sentimientos para promediar*/);
 	//testPrintIdSentiment(idSentiment);
 
 	fileHandler.writeFile("Salida_Kaggle.csv","id,sentiment", idSentiment);

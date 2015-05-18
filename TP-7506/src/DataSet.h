@@ -15,7 +15,9 @@
 #include "TrainReview.h"
 #include "TestReview.h"
 #include <vector>
+#include "PosNCD.h"
 #include "NCDMatrix.h"
+#include <algorithm>
 
 namespace std {
 
@@ -37,7 +39,7 @@ public:
 	void printNCDMatrix();
 	void generateNCDMatrix(int alto, int ancho);
 
-	vector<string> generateIdSentimentVector();
+	vector<string> generateIdSentimentVector(int cantidadSentimientos);
 
 };
 

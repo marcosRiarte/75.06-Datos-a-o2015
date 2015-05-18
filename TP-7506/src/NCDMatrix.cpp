@@ -42,6 +42,10 @@ int NCDMatrix::getAlto() {
 	return this->alto;
 }
 
+float* NCDMatrix::getFila(int fila){
+	return this->matriz[fila];
+}
+
 float NCDMatrix::getValue(int posX, int posY) {
 	return this->matriz[posX][posY];
 }
@@ -141,6 +145,59 @@ void NCDMatrix::levantarMatrizDeFormaLinear(){
 	}
 
 }
+
+typedef float FT;
+void swap(FT *a, FT *b) {
+  *a = *a + *b;
+  *b = *a - *b;
+  *a = *a - *b;
+}
+
+void minHeapify(FT a[], int size, int i) {
+  int l = 2* i ;
+  int r = 2* i + 1;
+  int smallest = i;
+  if (l < size && a[l] < a[smallest])
+    smallest = l;
+  if (r < size && a[r] < a[smallest])
+    smallest = r;
+  if (smallest != i) {
+    swap(&a[i], &a[smallest]);
+    minHeapify(a, size, smallest);
+  }
+
+}
+
+void buildMinHeap(FT a[], int size) {
+  int i;
+  for (i = size / 2; i >= 0; i--)
+    minHeapify(a, size, i);
+
+}
+
+int kthLargest(FT a[], int size, int k) {
+  FT minHeap[k];
+  int i;
+  for (i = 0; i < k; i++)
+    minHeap[i] = a[i];
+  buildMinHeap(minHeap, k);
+  for (i = k; i < size; i++) {
+    if (a[i] > minHeap[0]) {
+      minHeap[0] = a[i];
+      minHeapify(minHeap, k, 0);
+    }
+  }
+  return minHeap[0];
+}
+
+void NCDMatrix::find_k_max(int fila, int k, int indices[]) {
+  FT kth = kthLargest(this->matriz[fila], this->ancho, k);
+  int j = 0, i = 0;
+  for (; i < this->ancho; ++i)
+    if (this->matriz[fila][i] >= kth)
+      indices[j++] = i;
+}
+
 
 }
 

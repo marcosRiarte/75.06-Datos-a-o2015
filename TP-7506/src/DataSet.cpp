@@ -18,6 +18,14 @@ DataSet::~DataSet(){
 
 }
 
+float calcProm(vector<int> sentimientos){
+	int sumaTotal=0;
+	for(int i=0;i<sentimientos.size();i++){
+		sumaTotal+= sentimientos[i];
+	}
+	return (float)sumaTotal/(float)sentimientos.size();
+}
+
 void DataSet::setTrainData(vector<string> dataSet) {
 	int i=0;
 	vector<string> tokens;
@@ -70,12 +78,11 @@ void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 }
 
 
-vector<string> DataSet::generateIdSentimentVector(){
+vector<string> DataSet::generateIdSentimentVector(int cant){
 
 	vector<string> idSentiment;
 
 	int i=0,j=0,posSentCercano = 0, sentCercano=-1;
-	float distMinNCD = 1;
 	int cantTest = ncdMatrix->getAlto();
 	int cantTrain = ncdMatrix->getAncho();
 
@@ -84,20 +91,26 @@ vector<string> DataSet::generateIdSentimentVector(){
 		line = testDataSet[i].getId();
 		line.append(",");
 
-		distMinNCD = 1;
-		posSentCercano = 0;
+		vector<PosNCD> posNcdVector;
+		float *ncdArray = ncdMatrix->getFila(i);
 
 		for(j=0; j<cantTrain; j++){
-			if(distMinNCD > ncdMatrix->getValue(i,j)){
-			distMinNCD = ncdMatrix->getValue(i,j);
-			posSentCercano = j;
+			posNcdVector.push_back(PosNCD(j,ncdArray[j]));
 		}
-	}
-	sentCercano = trainDataSet[posSentCercano].getSentiment();
+
+		sort(posNcdVector.begin(),posNcdVector.end(),posNcdVector[0]);
+		vector<int> sentCercanos;
+		for(int k=0;k<cant;k++) sentCercanos.push_back(trainDataSet[posNcdVector[k].position].getSentiment());
+
+
+		posNcdVector.clear();
+
+	float prom = calcProm(sentCercanos);
 	ostringstream ss;
-	ss << sentCercano;
+	ss << prom;
 	line.append(ss.str());
 	idSentiment.push_back(line);
+	cout<<line<<endl;
 	}
 	return idSentiment;
 }
