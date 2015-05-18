@@ -49,8 +49,6 @@ string ReviewCleaner::cleanReview(string review){
 	string reviewFinal = this->quitarStopWords(reviewLimpia);
 
 
-	cout<<reviewFinal<<endl;
-
 
 	return reviewFinal;
 	}
