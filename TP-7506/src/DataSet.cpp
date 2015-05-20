@@ -65,7 +65,6 @@ void DataSet::setTestData(vector<string> dataSet) {
 void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 	NCDMatrix *ncdMatrix = new NCDMatrix (cantTest,cantTrain);
 	int i,j;
-	cout<<printTime()<<endl;
 	for(i=0;i<cantTest;i++){
 		cout<<i<<" : ";
 		for(j=0;j<cantTrain;j++){
