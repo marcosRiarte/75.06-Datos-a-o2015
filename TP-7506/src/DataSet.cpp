@@ -36,7 +36,7 @@ void DataSet::setTrainData(vector<string> dataSet) {
 		TrainReview trainReview;
 		tokens = parser.parseLine(dataSet[i],'\t');
 		cleanReview = reviewCleaner.cleanReview(tokens[2]);
-		compressedReview = compresor.compress_string((const string&)cleanReview,Z_BEST_SPEED);
+		compressedReview = compresor.compress_string((const string&)cleanReview,Z_BEST_COMPRESSION);
 		trainReview.setSentiment(tokens[1]);
 		trainReview.setReview(cleanReview);
 		trainReview.setCompLength(compressedReview.length());
@@ -53,7 +53,7 @@ void DataSet::setTestData(vector<string> dataSet) {
 		TestReview testReview;
 		tokens = parser.parseLine(dataSet[i],'\t');
 		cleanReview = reviewCleaner.cleanReview(tokens[1]);
-		compressedReview = compresor.compress_string((const string&)cleanReview,Z_BEST_SPEED);
+		compressedReview = compresor.compress_string((const string&)cleanReview,Z_BEST_COMPRESSION);
 		testReview.setReview(cleanReview);
 		testReview.setId(tokens[0]);
 		testReview.setCompLength(compressedReview.length());
@@ -65,6 +65,7 @@ void DataSet::setTestData(vector<string> dataSet) {
 void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 	NCDMatrix *ncdMatrix = new NCDMatrix (cantTest,cantTrain);
 	int i,j;
+	cout<<printTime()<<endl;
 	for(i=0;i<cantTest;i++){
 		cout<<i<<" : ";
 		for(j=0;j<cantTrain;j++){
@@ -74,7 +75,7 @@ void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 		cout<< "OK" << endl;
 	}
 	this->ncdMatrix = ncdMatrix;
-	this->ncdMatrix->guardarMatrizDeFormaLinear();
+	//this->ncdMatrix->guardarMatrizDeFormaLinear();
 }
 
 
@@ -110,7 +111,6 @@ vector<string> DataSet::generateIdSentimentVector(int cant){
 	ss << prom;
 	line.append(ss.str());
 	idSentiment.push_back(line);
-	cout<<line<<endl;
 	}
 	return idSentiment;
 }

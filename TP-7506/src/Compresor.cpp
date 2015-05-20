@@ -110,7 +110,7 @@ string Compresor::decompress_string(const string& str)
 float Compresor:: obtenerNCD(string strX,int lengthX,string strY, int lengthY){
 	string strXY = strX;
 	strXY.append(strY);
-	string cxy = compress_string((const string&)strXY,Z_BEST_SPEED); //Concatenacion
+	string cxy = compress_string((const string&)strXY,Z_BEST_COMPRESSION); //Concatenacion
 
 	float n;
 	if (lengthY > lengthX)

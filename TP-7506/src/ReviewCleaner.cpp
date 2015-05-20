@@ -38,19 +38,16 @@ string ReviewCleaner::cleanReview(string review){
 	string html= "<br /";
 	review = removerSubstringsDeString(html,review);
 	for (int x=0;x<review.size();x++){
-		if (!ispunct(review.at(x)) && !isdigit(review.at(x)))
+		if (!ispunct(review.at(x)) && !isdigit(review.at(x))&& review.at(x)!=' ')
 			if(review.at(x)>='A' && review.at(x)<= 'Z')
-				reviewLimpia+= (review.at(x) + ('a'-'A'));
+				reviewLimpia+= (review.at(x) + ('a'-'A')) - 'a';
 			else
-    			reviewLimpia+= review.at(x);
+    			reviewLimpia+= review.at(x) - 'a';
 
 	}
 
-	string reviewFinal = this->quitarStopWords(reviewLimpia);
-
-
-
-	return reviewFinal;
+	//string reviewFinal = this->quitarStopWords(reviewLimpia);
+	return reviewLimpia;
 	}
 
 string ReviewCleaner::quitarStopWords(string reviewLimpia){

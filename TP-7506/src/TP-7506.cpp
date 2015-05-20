@@ -48,16 +48,30 @@ void testPrintIdSentiment(vector<string> idSentiment){
 	}
 }
 
+string printTime(){
+time_t rawtime;
+  struct tm * timeinfo;
+  char buffer[80];
 
+  time (&rawtime);
+  timeinfo = localtime(&rawtime);
+
+  strftime(buffer,80,"%d-%m-%Y %I:%M:%S",timeinfo);
+  std::string str(buffer);
+
+  return str;
+}
 //test
 int main() {
 
+	cout<<"Comienzo: "<<printTime()<<endl;
+	string tiempoComienzo = printTime();
+
 	FileHandler fileHandler;
 	vector<string>trainRawData = fileHandler.readFile("labeledTrainData.tsv");
+	cout<<"Lectura train: "<<printTime()<<endl;
 	vector<string>testRawData = fileHandler.readFile("testData.tsv");
-	//testFileReader(trainRawData);
-	//testFileReader(testRawData);
-
+	cout<<"Lectura test: "<<printTime()<<endl;
 	Parser parser;
 	ReviewCleaner reviewCleaner;
 
@@ -66,18 +80,20 @@ int main() {
 	DataSet dataSet;
 
 	dataSet.setTrainData(trainRawData);
+	cout<<"Data train cargada: "<<printTime()<<endl;
 	dataSet.setTestData(testRawData);
+	cout<<"Data test cargada: "<<printTime()<<endl;
 
-	//testDataSet(dataSet);
+	dataSet.generateNCDMatrix(25000,1000);//La cantidad de reviews que vamos a generar la NCD para pruebas.
+	cout<<"Matriz generada: "<<printTime()<<endl;
 
-	dataSet.generateNCDMatrix(25000,500);//La cantidad de reviews que vamos a generar la NCD para pruebas.
-	//testPrintMatrix(dataSet);
-
-	vector<string> idSentiment = dataSet.generateIdSentimentVector(10/*Cantidad de sentimientos para promediar*/);
-	//testPrintIdSentiment(idSentiment);
+	vector<string> idSentiment = dataSet.generateIdSentimentVector(50/*Cantidad de sentimientos para promediar*/);
+	cout<<"Sentimientos calculados: "<<printTime()<<endl;
 
 	fileHandler.writeFile("Salida_Kaggle.csv","id,sentiment", idSentiment);
 
+	cout<<"Comienzo del programa: "<<tiempoComienzo<<endl;
+	cout<<"Fin del programa: "<<printTime()<<endl;
 
 	/*
 	  //Prueba de lectura sobre archivo de 25000 x 10
