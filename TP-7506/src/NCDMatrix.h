@@ -31,14 +31,21 @@ public:
 	float* getFila(int fila);
 	void setValue(float value,int posX, int posY);
 	float getValue(int posX, int posY);
-	void guardarMatrizDeFormaLinear();
 	void levantarMatrizDeFormaLinear();
 	bool saveMatrix(string direccion);
 	bool loadMatrix(string direccion, int alto, int ancho);
 	void find_k_max(int fila, int k, int indices[]);
+	void prepararMatrizParaGuardar();
+	void cerrarArchivoConMatrizGuardada();
+	void guardarValorEnString(int i,int j);
+	void guardarMatrizEnFormaLineal(int cantidadDeBloquesParaGuardar,int cantidadActualDeReviews);
+
 private:
 	int alto, ancho;
 	float **matriz;
+	FileHandler fileHandlerMatrix;
+	string lineaNCD;
+
 };
 }
 

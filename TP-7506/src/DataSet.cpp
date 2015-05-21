@@ -64,17 +64,22 @@ void DataSet::setTestData(vector<string> dataSet) {
 
 void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 	NCDMatrix *ncdMatrix = new NCDMatrix (cantTest,cantTrain);
+	ncdMatrix->prepararMatrizParaGuardar();
+	int cantidadDeBloquesAGuardar = 2;
+
 	int i,j;
 	for(i=0;i<cantTest;i++){
 		cout<<i<<" : ";
 		for(j=0;j<cantTrain;j++){
 			float NCD = compresor.obtenerNCD(testDataSet[i].getReview(),testDataSet[i].getCompLength(),trainDataSet[j].getReview(),trainDataSet[j].getCompLength());
 			ncdMatrix->setValue(NCD,i,j);
+			ncdMatrix->guardarValorEnString(i,j);
 		}
+		ncdMatrix->guardarMatrizEnFormaLineal(cantidadDeBloquesAGuardar,i);
 		cout<< "OK" << endl;
 	}
+	ncdMatrix->cerrarArchivoConMatrizGuardada();
 	this->ncdMatrix = ncdMatrix;
-	//this->ncdMatrix->guardarMatrizDeFormaLinear();
 }
 
 

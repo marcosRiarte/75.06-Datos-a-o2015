@@ -52,4 +52,17 @@ void FileHandler::writeFile(const char* fileName, vector<string> lines){
 	file.close();
 }
 
+
+void FileHandler::writeMatrixLine(string lines){
+	fileMatrix<<lines<<endl;
+}
+
+void FileHandler::openFile(const char* fileName){
+	fileMatrix.open(fileName);
+}
+
+void FileHandler::closeFile(){
+	fileMatrix.close();
+}
+
 } /* namespace std */

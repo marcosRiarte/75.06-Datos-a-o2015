@@ -85,25 +85,6 @@ bool loadArray( double* pdata, size_t length, const string& file_path)
     return true;
 }
 
-void NCDMatrix::guardarMatrizDeFormaLinear(){
-
-
-	FileHandler filehandler;
-	vector<string> distancias;
-	cout<<"Grabo Matriz de NCD linea por linea: "<<endl;
-	for(int i=0;i<this->getAlto();i++){
-		string lineaNCD = "";
-		for(int j=0;j<this->getAncho();j++){
-			ostringstream ss;
-			ss << this->matriz[i][j];
-			lineaNCD.append("#");
-			lineaNCD.append(ss.str());
-		}
-		distancias.push_back(lineaNCD);
-	}
-
-	filehandler.writeFile("Distancias.txt",distancias);
-}
 
 void NCDMatrix::levantarMatrizDeFormaLinear(){
 	FileHandler filehandler;
@@ -196,6 +177,27 @@ void NCDMatrix::find_k_max(int fila, int k, int indices[]) {
   for (; i < this->ancho; ++i)
     if (this->matriz[fila][i] >= kth)
       indices[j++] = i;
+}
+void NCDMatrix::prepararMatrizParaGuardar(){
+	this->fileHandlerMatrix.openFile("Distancias.txt");
+	this->lineaNCD = "";
+}
+
+void NCDMatrix::cerrarArchivoConMatrizGuardada(){
+	this->fileHandlerMatrix.closeFile();
+}
+void NCDMatrix::guardarValorEnString(int i,int j){
+	ostringstream ss;
+	ss << this->matriz[i][j];
+	this->lineaNCD.append("#");
+	this->lineaNCD.append(ss.str());
+}
+void NCDMatrix::guardarMatrizEnFormaLineal(int cantidadDeBloquesParaGuardar,int cantidadActualDeReviews){
+	int numeroMod =(cantidadActualDeReviews % (cantidadDeBloquesParaGuardar-1));
+	if (numeroMod == 0){
+		(this->fileHandlerMatrix).writeMatrixLine(lineaNCD);
+		lineaNCD = "";
+	}
 }
 
 

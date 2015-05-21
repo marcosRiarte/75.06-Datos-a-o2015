@@ -16,12 +16,17 @@
 namespace std {
 
 class FileHandler {
+private:
+	ofstream fileMatrix;
 public:
 	FileHandler();
 	virtual ~FileHandler();
 	vector<string> readFile(const char* filename);
 	void writeFile(const char* fileName, const char* header, vector<string> lines);
 	void writeFile(const char* fileName, vector<string> lines);
+	void writeMatrixLine(string lines);
+	void openFile(const char* fileName);
+	void closeFile();
 };
 
 } /* namespace std */
