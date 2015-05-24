@@ -86,15 +86,31 @@ bool loadArray( double* pdata, size_t length, const string& file_path)
 }
 
 
+
 void NCDMatrix::levantarMatrizDeFormaLinear(){
+	cout<<"Leo Matriz de NCD linea por linea: "<<endl;
+	levantoArchivoDistancias("0-3999.txt",0);
+	cout<<"Archivo 0-3999 leido"<<endl;
+	levantoArchivoDistancias("4000-14999.txt",4000);
+	cout<<"Archivo 4000-14999 leido"<<endl;
+	levantoArchivoDistancias("15000-19999.txt",15000);
+	cout<<"Archivo 15000-19999 leido"<<endl;
+	levantoArchivoDistancias("20000-24999.txt",20000);
+	cout<<"Archivo 20000-24999 leido"<<endl;
+}
+
+
+void NCDMatrix::levantoArchivoDistancias(string distanciasArchivo,int nroDeReviewTest){
+	string nombreArch = "Distancias entre ";
+	nombreArch.append(distanciasArchivo);
+
 	FileHandler filehandler;
 
-	vector<string> distancias= filehandler.readFile("Distancias.txt");
+	vector<string> distancias= filehandler.readFile(nombreArch.c_str());
+	cout<<distancias.size()<<endl;
 
-	cout<<"Leo Matriz de NCD linea por linea: "<<endl;
+	int x=nroDeReviewTest;
 
-
-	int x=0;
 	for(int i=0;i<distancias.size();i++){
 		string delimiter = "#";
 
@@ -106,23 +122,16 @@ void NCDMatrix::levantarMatrizDeFormaLinear(){
 
 
 		int y = 0;
+		cout<<x<<":";
 		while ((pos = distancias[i].find(delimiter)) != string::npos) {
 		    token = distancias[i].substr(0, pos);
 		    this->matriz[x][y] = ::atof(token.c_str());
 		    distancias[i].erase(0, pos + delimiter.length());
 			y++;
 		}
-
 		this->matriz[x][y] = ::atof(distancias[i].c_str());
+		cout<<"OK"<<endl;
 		x++;
-	}
-
-	//Prueba
-
-	for (int x=0;x<this->alto;x++){
-		for (int y=0;y<this->ancho;y++)
-			cout<<matriz[x][y]<< " ";
-		cout<<endl;
 	}
 
 }
@@ -179,7 +188,7 @@ void NCDMatrix::find_k_max(int fila, int k, int indices[]) {
       indices[j++] = i;
 }
 void NCDMatrix::prepararMatrizParaGuardar(){
-	this->fileHandlerMatrix.openFile("Distancias.txt");
+	this->fileHandlerMatrix.openFile("Distancias(20000-24999).txt");
 	this->lineaNCD = "";
 }
 
@@ -192,12 +201,9 @@ void NCDMatrix::guardarValorEnString(int i,int j){
 	this->lineaNCD.append("#");
 	this->lineaNCD.append(ss.str());
 }
-void NCDMatrix::guardarMatrizEnFormaLineal(int cantidadDeBloquesParaGuardar,int cantidadActualDeReviews){
-	int numeroMod =(cantidadActualDeReviews % (cantidadDeBloquesParaGuardar-1));
-	if (numeroMod == 0){
-		(this->fileHandlerMatrix).writeMatrixLine(lineaNCD);
-		lineaNCD = "";
-	}
+void NCDMatrix::guardarMatrizEnFormaLineal(){
+	this->fileHandlerMatrix.writeMatrixLine(lineaNCD);
+	lineaNCD = "";
 }
 
 

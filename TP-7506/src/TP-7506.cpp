@@ -84,7 +84,8 @@ int main() {
 	dataSet.setTestData(testRawData);
 	cout<<"Data test cargada: "<<printTime()<<endl;
 
-	dataSet.generateNCDMatrix(25000,100);//La cantidad de reviews que vamos a generar la NCD para pruebas.
+	dataSet.generateNCDMatrix(25000,25000);//La cantidad de reviews que vamos a generar la NCD para pruebas.
+	//dataSet.generateNCDMatrix(); //Genera una matriz a partir de levantar los archivos
 	cout<<"Matriz generada y guardada: "<<printTime()<<endl;
 
 	vector<string> idSentiment = dataSet.generateIdSentimentVector(50/*Cantidad de sentimientos para promediar*/);

@@ -38,7 +38,7 @@ public:
 	void printExample();
 	void printNCDMatrix();
 	void generateNCDMatrix(int alto, int ancho);
-
+	void generateNCDMatrix();
 	vector<string> generateIdSentimentVector(int cantidadSentimientos);
 
 };

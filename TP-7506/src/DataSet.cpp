@@ -65,8 +65,6 @@ void DataSet::setTestData(vector<string> dataSet) {
 void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 	NCDMatrix *ncdMatrix = new NCDMatrix (cantTest,cantTrain);
 	ncdMatrix->prepararMatrizParaGuardar();
-	int cantidadDeBloquesAGuardar = 2;
-
 	int i,j;
 	for(i=0;i<cantTest;i++){
 		cout<<i<<" : ";
@@ -75,13 +73,18 @@ void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 			ncdMatrix->setValue(NCD,i,j);
 			ncdMatrix->guardarValorEnString(i,j);
 		}
-		ncdMatrix->guardarMatrizEnFormaLineal(cantidadDeBloquesAGuardar,i);
+		ncdMatrix->guardarMatrizEnFormaLineal();
 		cout<< "OK" << endl;
 	}
 	ncdMatrix->cerrarArchivoConMatrizGuardada();
 	this->ncdMatrix = ncdMatrix;
 }
 
+void DataSet::generateNCDMatrix(){
+	NCDMatrix *ncdMatrix = new NCDMatrix (25000,25000);
+	ncdMatrix->levantarMatrizDeFormaLinear();
+	this->ncdMatrix = ncdMatrix;
+}
 
 vector<string> DataSet::generateIdSentimentVector(int cant){
 

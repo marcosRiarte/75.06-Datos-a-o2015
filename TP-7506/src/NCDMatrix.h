@@ -38,8 +38,8 @@ public:
 	void prepararMatrizParaGuardar();
 	void cerrarArchivoConMatrizGuardada();
 	void guardarValorEnString(int i,int j);
-	void guardarMatrizEnFormaLineal(int cantidadDeBloquesParaGuardar,int cantidadActualDeReviews);
-
+	void guardarMatrizEnFormaLineal();
+	void levantoArchivoDistancias(string nombreArch,int nroDeReviewTest);
 private:
 	int alto, ancho;
 	float **matriz;
