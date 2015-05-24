@@ -55,23 +55,45 @@ void NCDMatrix::setValue(float value, int posX, int posY) {
 }
 
 bool NCDMatrix::saveMatrix(string direccion) {
-	ofstream os(direccion.c_str(), ios::binary | ios::out);
-	if ( !os.is_open() ) {
+	// Write data to file
+	FILE* file = fopen (direccion.c_str(), "w");
+	if (file == NULL) {
 		return false;
 	}
 
-	os.write(reinterpret_cast<const char*>(matriz), streamsize(alto*ancho*sizeof(float)));
-	os.close();
+	for(int i = 0; i< alto; i++){
+		for(int j = 0; j< ancho; j++){
+			float f = (float) matriz[i][j];
+			fwrite(&f, sizeof(float), 1, file);
+		 }
+	   // We are just storing the indices, so value at i is equal to i
+	}
+	fclose(file);
+
+
 	return true;
 }
 
-bool NCDMatrix::loadMatrix(string direccion, int alto, int ancho) {
-	ifstream is(direccion.c_str(), ios::binary | ios::in);
-	if ( !is.is_open() )
-	   return false;
 
-	is.read(reinterpret_cast<char*>(matriz), streamsize(alto*ancho*sizeof(double)));
-	is.close();
+
+bool NCDMatrix::loadMatrix(string direccion, int alto, int ancho) {
+		FILE* file = fopen(direccion.c_str(), "r");
+		if (file == NULL) {
+			return false;
+		}
+
+		for(int i = 0; i< alto; i++){
+			for(int j = 0; j< ancho; j++){
+				float f;
+				fread(&f, sizeof(float), 1, file);
+				matriz[i][j] = f;
+				cout<<f<<"#";
+			}
+			cout<<endl;
+		}
+
+		fclose(file);
+
 	return true;
 }
 
@@ -188,7 +210,7 @@ void NCDMatrix::find_k_max(int fila, int k, int indices[]) {
       indices[j++] = i;
 }
 void NCDMatrix::prepararMatrizParaGuardar(){
-	this->fileHandlerMatrix.openFile("Distancias(20000-24999).txt");
+	this->fileHandlerMatrix.openFile("Distancias de matriz completa.txt");
 	this->lineaNCD = "";
 }
 
@@ -201,6 +223,11 @@ void NCDMatrix::guardarValorEnString(int i,int j){
 	this->lineaNCD.append("#");
 	this->lineaNCD.append(ss.str());
 }
+
+string NCDMatrix::obtenerValorEnString(){
+	return this->lineaNCD;
+}
+
 void NCDMatrix::guardarMatrizEnFormaLineal(){
 	this->fileHandlerMatrix.writeMatrixLine(lineaNCD);
 	lineaNCD = "";

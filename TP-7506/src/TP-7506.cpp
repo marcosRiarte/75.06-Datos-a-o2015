@@ -61,6 +61,8 @@ time_t rawtime;
 
   return str;
 }
+
+
 //test
 int main() {
 
@@ -86,9 +88,9 @@ int main() {
 
 	dataSet.generateNCDMatrix(25000,25000);//La cantidad de reviews que vamos a generar la NCD para pruebas.
 	//dataSet.generateNCDMatrix(); //Genera una matriz a partir de levantar los archivos
-	cout<<"Matriz generada y guardada: "<<printTime()<<endl;
+	cout<<"Matriz generada: "<<printTime()<<endl;
 
-	vector<string> idSentiment = dataSet.generateIdSentimentVector(50/*Cantidad de sentimientos para promediar*/);
+	vector<string> idSentiment = dataSet.generateIdSentimentVector(200/*Cantidad de sentimientos para promediar*/);
 	cout<<"Sentimientos calculados: "<<printTime()<<endl;
 
 	fileHandler.writeFile("Salida_Kaggle.csv","id,sentiment", idSentiment);
@@ -96,13 +98,6 @@ int main() {
 	cout<<"Comienzo del programa: "<<tiempoComienzo<<endl;
 	cout<<"Fin del programa: "<<printTime()<<endl;
 
-	/*
-	  //Prueba de lectura sobre archivo de 25000 x 10
-	  NCDMatrix ncdmatrix(25000,10);
-	  ncdmatrix.levantarMatrizDeFormaLinear();
-
-
-	 */
 
 	return 0;
 }
@@ -111,37 +106,40 @@ int main() {
 
 
 
+/*
+void pruebaMatriz() {
+	NCDMatrix *matriz = new NCDMatrix(25000, 25000);
+	for (int i = 0; i < 25000; ++i) {
+		for (int j = 0; j < 25000; ++j) {
+			matriz->setValue(0.505,i,j);
+		}
 
-/*void pruebaMatriz() {
-	NDCMatrix *matriz = new NDCMatrix(3, 3);
-		matriz->setValue(0.1,0,0);
-		matriz->setValue(0.2,0,1);
-		matriz->setValue(0.3,0,2);
-		matriz->setValue(0.4,1,0);
-		matriz->setValue(0.4,1,1);
-		matriz->setValue(0.4,1,2);
-		matriz->setValue(0.3,2,1);
-		matriz->setValue(0.5,2,2);
-		matriz->setValue(0.9,2,0);
-
-
-		if (matriz->saveMatrix("matrizNDC.dat")) {
+	}
+		if (matriz->saveMatrix("matrizNCD.dat")) {
+			delete(matriz);
 			cout<< "SE guardo la matriz"<<endl;
-			NDCMatrix *nMatriz = new NDCMatrix(3, 3);
-			if (nMatriz->loadMatrix("matrizNDC.dat",3,3)) {
-				cout<< "SE cargo la nueva matriz"<<endl;
-				for (int i = 0; i < 3; ++i) {
-					for (int j = 0; j < 3; ++j) {
-						cout<< "NCD pos ("<<i<<","<<j<<"): "<<nMatriz->getValue(i,j)<<endl;
-					}
-
-				}
-			} else {
-				cout<< "NO se cargo la nueva matriz"<<endl;
-			}
 
 		} else {
+			delete(matriz);
 			cout<< "NO se guardo la matriz"<<endl;
 		}
+		*/
+	/*cout<< "INICIO de la nueva matriz"<<endl;
+	NCDMatrix *nMatriz = new NCDMatrix(25000, 25000);
+	if (nMatriz->loadMatrix("matrizNCD.dat",25000,25000)) {
+		cout<< "SE cargo la nueva matriz"<<endl;
+		double res = 0;
+		for (int i = 0; i < 25000; ++i) {
+			for (int j = 0; j < 25000; ++j) {
+				res += nMatriz->getValue(i,j);
+			}
+		}
+		cout<< "RESULTADO de la suma de matriz: "<<res<<endl;
+	} else {
+		cout<< "NO se cargo la nueva matriz"<<endl;
+	}
 }
+
 */
+
+

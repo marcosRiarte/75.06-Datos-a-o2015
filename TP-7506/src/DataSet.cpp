@@ -78,12 +78,16 @@ void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 	}
 	ncdMatrix->cerrarArchivoConMatrizGuardada();
 	this->ncdMatrix = ncdMatrix;
+	this->ncdMatrix->saveMatrix("MatrizBinaria-0-25000.dat"); //Pruebo guardar matriz binaria
 }
 
 void DataSet::generateNCDMatrix(){
+
 	NCDMatrix *ncdMatrix = new NCDMatrix (25000,25000);
-	ncdMatrix->levantarMatrizDeFormaLinear();
+	//ncdMatrix->levantarMatrizDeFormaLinear();
+	//ncdMatrix->loadMatrix("MatrizBinaria-0-25000.dat",25000,25000);
 	this->ncdMatrix = ncdMatrix;
+	this->ncdMatrix->saveMatrix("MatrizBinaria-0-25000.dat"); //Pruebo guardar matriz binaria
 }
 
 vector<string> DataSet::generateIdSentimentVector(int cant){
