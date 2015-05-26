@@ -66,7 +66,7 @@ void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 	NCDMatrix *ncdMatrix = new NCDMatrix (cantTest,cantTrain);
 	ncdMatrix->prepararMatrizParaGuardar();
 	int i,j;
-	for(i=0;i<cantTest;i++){
+	for(i=20000;i<cantTest;i++){
 		cout<<i<<" : ";
 		for(j=0;j<cantTrain;j++){
 			float NCD = compresor.obtenerNCD(testDataSet[i].getReview(),testDataSet[i].getCompLength(),trainDataSet[j].getReview(),trainDataSet[j].getCompLength());
@@ -85,9 +85,9 @@ void DataSet::generateNCDMatrix(){
 
 	NCDMatrix *ncdMatrix = new NCDMatrix (25000,25000);
 	//ncdMatrix->levantarMatrizDeFormaLinear();
-	//ncdMatrix->loadMatrix("MatrizBinaria-0-25000.dat",25000,25000);
+	ncdMatrix->loadMatrix("MatrizBinaria-0-25000.dat",25000,25000);
 	this->ncdMatrix = ncdMatrix;
-	this->ncdMatrix->saveMatrix("MatrizBinaria-0-25000.dat"); //Pruebo guardar matriz binaria
+	//this->ncdMatrix->saveMatrix("MatrizBinaria-0-25000.dat"); //Pruebo guardar matriz binaria
 }
 
 vector<string> DataSet::generateIdSentimentVector(int cant){

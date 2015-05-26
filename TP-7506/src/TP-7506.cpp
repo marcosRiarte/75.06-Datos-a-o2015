@@ -82,22 +82,29 @@ int main() {
 	DataSet dataSet;
 
 	dataSet.setTrainData(trainRawData);
+
 	cout<<"Data train cargada: "<<printTime()<<endl;
 	dataSet.setTestData(testRawData);
 	cout<<"Data test cargada: "<<printTime()<<endl;
 
-	dataSet.generateNCDMatrix(25000,25000);//La cantidad de reviews que vamos a generar la NCD para pruebas.
-	//dataSet.generateNCDMatrix(); //Genera una matriz a partir de levantar los archivos
+
+	//dataSet.generateNCDMatrix(25000,25000);//La cantidad de reviews que vamos a generar la NCD para pruebas.
+	dataSet.generateNCDMatrix(); //Genera una matriz a partir de levantar los archivos
 	cout<<"Matriz generada: "<<printTime()<<endl;
 
-	vector<string> idSentiment = dataSet.generateIdSentimentVector(200/*Cantidad de sentimientos para promediar*/);
-	cout<<"Sentimientos calculados: "<<printTime()<<endl;
+	vector<string> idSentiment;
 
-	fileHandler.writeFile("Salida_Kaggle.csv","id,sentiment", idSentiment);
 
+	idSentiment = dataSet.generateIdSentimentVector(10000/*Cantidad de sentimientos para promediar*/);
+	cout<<"Sentimientos calculados con K= "<<10000<<":"<<printTime()<<endl;
+	fileHandler.writeFile("Salida_Kaggle_10000.csv","id,sentiment", idSentiment);
+	idSentiment.clear();
+
+
+	/*
 	cout<<"Comienzo del programa: "<<tiempoComienzo<<endl;
 	cout<<"Fin del programa: "<<printTime()<<endl;
-
+*/
 
 	return 0;
 }
