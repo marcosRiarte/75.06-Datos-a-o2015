@@ -27,8 +27,6 @@ string ReviewCleaner::removerSubstringsDeString(string s,string t){ //s: substri
 	   t.erase(i,s.size());
 	   i = t.find(s);
 	}
-
-
 	return t;
 }
 
@@ -40,37 +38,13 @@ string ReviewCleaner::cleanReview(string review){
 	for (int x=0;x<review.size();x++){
 		if (!ispunct(review.at(x)) && !isdigit(review.at(x))&& review.at(x)!=' ')
 			if(review.at(x)>='A' && review.at(x)<= 'Z')
-				reviewLimpia+= (review.at(x) + ('a'-'A')) - 'a';
+				reviewLimpia+= review.at(x) - 'A';
 			else
     			reviewLimpia+= review.at(x) - 'a';
 
 	}
 
-	//string reviewFinal = this->quitarStopWords(reviewLimpia);
 	return reviewLimpia;
-	}
-
-string ReviewCleaner::quitarStopWords(string reviewLimpia){
-
-	stringstream nuevaReview;
-	nuevaReview.str(""); //Vacia le buffer
-	copy(string_token_iterator(reviewLimpia),string_token_iterator(),ostream_iterator <string> (nuevaReview,"\n"));
-
-
-
-	//Elimino las stopwords
-	string reviewFinal = " ";
-
-	string palabraTokenizada;
-	while (nuevaReview >> palabraTokenizada){
-		if (!this->stopword.esUnaStopWord(palabraTokenizada)){
-			reviewFinal.append(palabraTokenizada);
-			reviewFinal.append(" ");// Si se quiere agregar espacios
-		}
-	}
-
-
-	return reviewFinal;
 }
 
 }

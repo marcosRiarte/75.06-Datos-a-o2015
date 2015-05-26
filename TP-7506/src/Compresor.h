@@ -17,9 +17,11 @@
 using namespace std;
 
 class Compresor {
+private:
+	int compressionlevel;
 public:
-	Compresor();
-	string compress_string(const string& str,int compressionlevel);
+	Compresor(int compressionlevel);
+	string compress_string(const string& str);
 	string decompress_string(const string& str);
 	float obtenerNCD(string strA,int numa,string strB, int numb);
 	virtual ~Compresor();

@@ -25,20 +25,20 @@ class DataSet {
 private:
 	vector<TrainReview> trainDataSet;
 	vector<TestReview> testDataSet;
-	Compresor compresor;
-	ReviewCleaner reviewCleaner;
-	Parser parser;
+	Compresor *compresor;
+	ReviewCleaner *reviewCleaner;
+	Parser *parser;
 	NCDMatrix *ncdMatrix;
 
 public:
-	DataSet();
+	DataSet(Parser*,ReviewCleaner*,Compresor*);
 	virtual ~DataSet();
-	void setTrainData(vector<string> dataSet);
-	void setTestData(vector<string> dataSet);
+	void setTrainData(vector<string>);
+	void setTestData(vector<string>);
 	void printExample();
 	void printNCDMatrix();
 	void generateNCDMatrix(int alto, int ancho);
-	void generateNCDMatrix();
+	void loadNCDMatrix(const char* matrixName, int filas, int columnas);
 	vector<string> generateIdSentimentVector(int cantidadSentimientos);
 
 };

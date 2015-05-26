@@ -29,7 +29,6 @@ vector<string> Parser::parseLine(string textLine, char delimiter)
 	   while(getline(ss, token, delimiter)) {
 	       tokens.push_back(token);
 	   }
-
 	   return tokens;
 }
 

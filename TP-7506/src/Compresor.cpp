@@ -19,14 +19,15 @@
 
 using  namespace std;
 
-Compresor::Compresor() {
-	// TODO Auto-generated constructor stub
+Compresor::Compresor(int compressionlevel) {
+	this->compressionlevel = compressionlevel;
+}
+
+Compresor::~Compresor(){
 
 }
 
-
-
-string Compresor::compress_string(const string& str,int compressionlevel = Z_BEST_COMPRESSION)
+string Compresor::compress_string(const string& str)
 {
     z_stream zs;                        // z_stream is zlib's control structure
     memset(&zs, 0, sizeof(zs));
@@ -110,7 +111,7 @@ string Compresor::decompress_string(const string& str)
 float Compresor:: obtenerNCD(string strX,int lengthX,string strY, int lengthY){
 	string strXY = strX;
 	strXY.append(strY);
-	string cxy = compress_string((const string&)strXY,Z_BEST_COMPRESSION); //Concatenacion
+	string cxy = compress_string((const string&)strXY); //Concatenacion
 
 	float n;
 	if (lengthY > lengthX)
@@ -120,7 +121,4 @@ float Compresor:: obtenerNCD(string strX,int lengthX,string strY, int lengthY){
 	return n;
 }
 
-Compresor::~Compresor() {
-	// TODO Auto-generated destructor stub
-}
 

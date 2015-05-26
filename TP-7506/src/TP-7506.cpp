@@ -24,31 +24,14 @@
 #include "Parser.h"
 #include "TrainReview.h"
 
+#define CANTTEST 25000
+#define CANTTRAIN 25000
+#define CANTSENTIMENTS 70;
+
 
 using namespace std;
 
-void testFileReader(vector<string> testVector){
-	cout<<"File string example: ";
-	cout<<testVector[7]<<endl;
-
-}
-
-void testDataSet(DataSet data){
-	data.printExample();
-}
-
-void testPrintMatrix(DataSet dataSet){
-
-	dataSet.printNCDMatrix();
-}
-
-void testPrintIdSentiment(vector<string> idSentiment){
-	for(int i=0;i<50;i++){
-		cout<<idSentiment[i]<<endl;
-	}
-}
-
-string printTime(){
+string getTime(){
 time_t rawtime;
   struct tm * timeinfo;
   char buffer[80];
@@ -62,91 +45,55 @@ time_t rawtime;
   return str;
 }
 
-
-//test
 int main() {
 
-	cout<<"Comienzo: "<<printTime()<<endl;
-	string tiempoComienzo = printTime();
-
-	FileHandler fileHandler;
-	vector<string>trainRawData = fileHandler.readFile("labeledTrainData.tsv");
-	cout<<"Lectura train: "<<printTime()<<endl;
-	vector<string>testRawData = fileHandler.readFile("testData.tsv");
-	cout<<"Lectura test: "<<printTime()<<endl;
-	Parser parser;
-	ReviewCleaner reviewCleaner;
-
-	Compresor compresor;
-
-	DataSet dataSet;
-
-	dataSet.setTrainData(trainRawData);
-
-	cout<<"Data train cargada: "<<printTime()<<endl;
-	dataSet.setTestData(testRawData);
-	cout<<"Data test cargada: "<<printTime()<<endl;
+	string tiempoComienzo = getTime();
+	cout<<"Comienzo: "<<tiempoComienzo<<endl;
 
 
-	//dataSet.generateNCDMatrix(25000,25000);//La cantidad de reviews que vamos a generar la NCD para pruebas.
-	dataSet.generateNCDMatrix(); //Genera una matriz a partir de levantar los archivos
-	cout<<"Matriz generada: "<<printTime()<<endl;
+	FileHandler *fileHandler = new FileHandler();
+	vector<string> trainRawData = fileHandler->readFile("labeledTrainData.tsv");
+	cout<<"Lectura train: "<<getTime()<<endl;
+	vector<string> testRawData = fileHandler->readFile("testData.tsv");
+	cout<<"Lectura test: "<<getTime()<<endl;
+
+	Parser *parser = new Parser();
+
+	ReviewCleaner *reviewCleaner = new ReviewCleaner();
+
+	Compresor *compresor = new Compresor(Z_BEST_COMPRESSION);
+
+	DataSet *dataSet = new DataSet(parser,reviewCleaner,compresor);
+
+	dataSet->setTrainData(trainRawData);
+	cout<<"Data train cargada: "<<getTime()<<endl;
+
+	dataSet->setTestData(testRawData);
+	cout<<"Data test cargada: "<<getTime()<<endl;
+
+
+	//dataSet.generateNCDMatrix(25000,25000);
+	dataSet->loadNCDMatrix("MatrizBinaria-0-25000.dat", CANTTEST, CANTTRAIN);
+
+	cout<<"Matriz cargada: "<<getTime()<<endl;
 
 	vector<string> idSentiment;
+	int cantSentiments = CANTSENTIMENTS;
 
+	ostringstream sentString;
+	string nombreSalida = "Salida_Kaggle_";
+	sentString << cantSentiments << ".csv";
+	nombreSalida.append(sentString.str());
 
-	idSentiment = dataSet.generateIdSentimentVector(10000/*Cantidad de sentimientos para promediar*/);
-	cout<<"Sentimientos calculados con K= "<<10000<<":"<<printTime()<<endl;
-	fileHandler.writeFile("Salida_Kaggle_10000.csv","id,sentiment", idSentiment);
+	idSentiment = dataSet->generateIdSentimentVector(cantSentiments);
+	cout<<"Sentimientos calculados con K = "<<cantSentiments<<" : "<<getTime()<<endl;
+
+	fileHandler->writeFile(nombreSalida.c_str(),"id,sentiment", idSentiment);
 	idSentiment.clear();
 
-
-	/*
 	cout<<"Comienzo del programa: "<<tiempoComienzo<<endl;
-	cout<<"Fin del programa: "<<printTime()<<endl;
-*/
+	cout<<"Fin del programa: "<<getTime()<<endl;
 
 	return 0;
 }
-
-
-
-
-
-/*
-void pruebaMatriz() {
-	NCDMatrix *matriz = new NCDMatrix(25000, 25000);
-	for (int i = 0; i < 25000; ++i) {
-		for (int j = 0; j < 25000; ++j) {
-			matriz->setValue(0.505,i,j);
-		}
-
-	}
-		if (matriz->saveMatrix("matrizNCD.dat")) {
-			delete(matriz);
-			cout<< "SE guardo la matriz"<<endl;
-
-		} else {
-			delete(matriz);
-			cout<< "NO se guardo la matriz"<<endl;
-		}
-		*/
-	/*cout<< "INICIO de la nueva matriz"<<endl;
-	NCDMatrix *nMatriz = new NCDMatrix(25000, 25000);
-	if (nMatriz->loadMatrix("matrizNCD.dat",25000,25000)) {
-		cout<< "SE cargo la nueva matriz"<<endl;
-		double res = 0;
-		for (int i = 0; i < 25000; ++i) {
-			for (int j = 0; j < 25000; ++j) {
-				res += nMatriz->getValue(i,j);
-			}
-		}
-		cout<< "RESULTADO de la suma de matriz: "<<res<<endl;
-	} else {
-		cout<< "NO se cargo la nueva matriz"<<endl;
-	}
-}
-
-*/
-
 
