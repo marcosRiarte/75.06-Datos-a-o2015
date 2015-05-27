@@ -8,15 +8,8 @@
 #ifndef NDCMATRIZ_H_
 #define NDCMATRIZ_H_
 
-#include <string.h>
-#include <fstream>
 #include <iostream>
-#include <sstream>
-#include <iterator>
-#include <stdlib.h>
-#include <stdio.h>
 #include "FileHandler.h"
-#include "stringtokeniterator.h"
 
 namespace std{
 

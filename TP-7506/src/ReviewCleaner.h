@@ -9,18 +9,12 @@
 #define SRC_REVIEWCLEANER_H_
 
 #include <iostream>
-#include <vector>
-#include <sstream>
-#include <iterator>
-#include "stringtokeniterator.h"
-#include "StopWord.h"
 
 namespace std {
 
 class ReviewCleaner {
 private:
 	string quitarStopWords(string);
-	StopWord stopword;
 public:
 	ReviewCleaner();
 	virtual ~ReviewCleaner();

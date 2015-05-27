@@ -13,6 +13,9 @@ namespace std {
 
 NCDMatrix::NCDMatrix() {
 	// TODO Auto-generated constructor stub
+	this->alto = 0;
+	this->ancho = 0;
+	this->matriz = NULL;
 
 }
 

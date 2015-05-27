@@ -8,16 +8,9 @@
 
 
 #include <iostream>
-#include <vector>
-#include <fstream>
-#include <sstream>
 #include "compress/zlib.h"
 #include "Compresor.h"
-#include "stringtokeniterator.h"
 #include "DataSet.h"
-#include <iterator>
-#include <stdlib.h>
-#include <string>
 
 #include "FileHandler.h"
 #include "NCDMatrix.h"
@@ -26,7 +19,7 @@
 
 #define CANTTEST 25000
 #define CANTTRAIN 25000
-#define CANTSENTIMENTS 70;
+#define CANTSENTIMENTS 300;
 
 
 using namespace std;

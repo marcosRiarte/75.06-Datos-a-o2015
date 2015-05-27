@@ -72,7 +72,7 @@ void DataSet::generateNCDMatrix(int cantTest, int cantTrain){
 
 	int i=0,j=0;
 
-	for(i=20000;i<cantTest;i++){
+	for(i=0;i<cantTest;i++){
 		cout<<i<<" : ";
 		for(j=0;j<cantTrain;j++){
 			float NCD = compresor->obtenerNCD(testDataSet[i].getReview(),testDataSet[i].getCompLength(),trainDataSet[j].getReview(),trainDataSet[j].getCompLength());
