@@ -26,7 +26,7 @@
 
 #define CANTTEST 25000
 #define CANTTRAIN 25000
-#define CANTSENTIMENTS 70;
+#define CANTSENTIMENTS 151;
 
 
 using namespace std;
@@ -80,16 +80,21 @@ int main() {
 	vector<string> idSentiment;
 	int cantSentiments = CANTSENTIMENTS;
 
-	ostringstream sentString;
-	string nombreSalida = "Salida_Kaggle_";
-	sentString << cantSentiments << ".csv";
-	nombreSalida.append(sentString.str());
+	string nombreSalida = "Kaggle.csv";
 
-	idSentiment = dataSet->generateIdSentimentVector(cantSentiments);
+	dataSet->generateSentimentVector(cantSentiments);
+	idSentiment = dataSet->getIdSentimentVector();
+
 	cout<<"Sentimientos calculados con K = "<<cantSentiments<<" : "<<getTime()<<endl;
 
 	fileHandler->writeFile(nombreSalida.c_str(),"id,sentiment", idSentiment);
 	idSentiment.clear();
+
+	vector<string> sentimentLuis = dataSet->getSentimentVector();
+
+	fileHandler->writeFile("grupo15_probs.csv",sentimentLuis);
+	sentimentLuis.clear();
+
 
 	cout<<"Comienzo del programa: "<<tiempoComienzo<<endl;
 	cout<<"Fin del programa: "<<getTime()<<endl;

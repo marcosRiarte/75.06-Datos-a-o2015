@@ -92,18 +92,13 @@ void DataSet::loadNCDMatrix(const char* matrixName, int filas, int columnas){
 	this->ncdMatrix = ncdMatrix;
 }
 
-vector<string> DataSet::generateIdSentimentVector(int cant){
-
-	vector<string> idSentiment;
+void DataSet::generateSentimentVector(int cant){
 
 	int i=0,j=0;
 	int cantTest = ncdMatrix->getAlto();
 	int cantTrain = ncdMatrix->getAncho();
 
 	for(i=0; i<cantTest; i++){
-		string line;
-		line = testDataSet[i].getId();
-		line.append(",");
 
 		vector<PosNCD> posNcdVector;
 		float *ncdArray = ncdMatrix->getFila(i);
@@ -121,12 +116,28 @@ vector<string> DataSet::generateIdSentimentVector(int cant){
 		posNcdVector.clear();
 
 	float prom = calcProm(sentCercanos);
-	ostringstream ss;
-	ss << prom;
-	line.append(ss.str());
-	idSentiment.push_back(line);
+	this->sentiments.push_back(prom);
+	}
+}
+
+vector<string> DataSet::getIdSentimentVector(){
+	vector<string> idSentiment;
+	for(int i=0;i<sentiments.size();i++){
+		stringstream line;
+		line << testDataSet[i].getId() << ',' << sentiments[i];
+		idSentiment.push_back(line.str());
 	}
 	return idSentiment;
+}
+
+vector<string> DataSet::getSentimentVector(){
+	vector<string> Sentiment;
+		for(int i=0;i<sentiments.size();i++){
+			stringstream line;
+			line << sentiments[i];
+			Sentiment.push_back(line.str());
+		}
+		return Sentiment;
 }
 
 }

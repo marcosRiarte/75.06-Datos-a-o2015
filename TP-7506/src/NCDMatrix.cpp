@@ -82,13 +82,11 @@ bool NCDMatrix::loadMatrix(string direccion, int alto, int ancho) {
 		}
 
 		for(int i = 0; i< alto; i++){
-			cout<<i<<":";
 			for(int j = 0; j< ancho; j++){
 				float f;
 				fread(&f, sizeof(float), 1, file);
 				matriz[i][j] = f;
 			}
-			cout<<"OK"<<endl;
 		}
 
 		fclose(file);
