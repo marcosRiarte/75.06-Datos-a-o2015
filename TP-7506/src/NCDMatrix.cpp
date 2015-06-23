@@ -12,8 +12,9 @@
 namespace std {
 
 NCDMatrix::NCDMatrix() {
-	// TODO Auto-generated constructor stub
-
+	matriz = NULL;
+	alto = 0;
+	ancho = 0;
 }
 
 NCDMatrix::NCDMatrix(int alto, int ancho) {

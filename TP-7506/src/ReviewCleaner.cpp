@@ -35,13 +35,15 @@ string ReviewCleaner::cleanReview(string review){
 	string reviewLimpia = "";
 	string html= "<br /";
 	review = removerSubstringsDeString(html,review);
-	for (int x=0;x<review.size();x++){
-		if (!ispunct(review.at(x)) && !isdigit(review.at(x))&& review.at(x)!=' ')
-			if(review.at(x)>='A' && review.at(x)<= 'Z')
+	for (unsigned int x=0;x<review.size();x++){
+		if (!ispunct(review.at(x)) && !isdigit(review.at(x))&& review.at(x)!=' '){
+			if(review.at(x)>='A' && review.at(x)<= 'Z'){
 				reviewLimpia+= review.at(x) - 'A';
-			else
+			}
+			else{
     			reviewLimpia+= review.at(x) - 'a';
-
+			}
+		}
 	}
 
 	return reviewLimpia;
